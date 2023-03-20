@@ -1,0 +1,12 @@
+{
+	"status": 200,
+	"success": true,
+	"msg": "获取成功",
+	"msgDev": null,
+	"response": {
+		"success": true,
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJqdGkiOiI2MDg0ZTIyYy04OGEyLTQxNjctOWI2NC1hNGQ1ZmJhMTZkMWUiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDIzLzIvMjYgMTk6MzY6MzYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiLotoXnuqfnrqHnkIblkZgiLCJuYmYiOjE2Nzc0MTEzOTAsImV4cCI6MTY3NzQxMTM5NiwiaXNzIjoiTWVkaWNhbFN5c3RlbS5CZXYiLCJhdWQiOiJ3ciJ9.HUA-xnRmWwVhigrOCkXQkhF3C_JA_vqbEhZ_nLmQxWw",
+		"expires_in": 6.0,
+		"token_type": "Bearer"
+	}
+}

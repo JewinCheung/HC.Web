@@ -1,0 +1,42 @@
+.cimo-shadow {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px !important;
+    transition: All 0.2s ease-in-out;
+}
+.cimo-shadow:hover{
+      box-shadow: 0 10px 13px -6px rgba(0, 0, 0, 0.2), 0 20px 31px 3px rgba(0, 0, 0, 0.14), 0 8px 38px 7px rgba(0, 0, 0, 0.12) !important;
+}
+.base-card-shadow{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+    border-radius: 4px;
+  
+
+}
+.login-card-shadow{
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px; */
+    border-radius: 4px;
+    box-shadow: 0 11px 15px -7px rgb(0 0 0 / 20%), 0 24px 38px 3px rgb(0 0 0 / 14%), 0 9px 46px 8px rgb(0 0 0 / 12%);
+
+}
+.base-markdown-content{
+    padding: 0px 10px 0px 10px;
+    max-width: 760px;
+    margin: 0 auto;
+    color: #2c3e50;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI Emoji, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    word-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+}
+.bg-my-loadingBar-color{
+    background-image: linear-gradient(to right, #56ccf2, #2f80ed, #eeeeee) !important;
+    background-size: 400% !important;
+    animation: loadingBar-animation 3s infinite;
+}
+@keyframes loadingBar-animation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}
