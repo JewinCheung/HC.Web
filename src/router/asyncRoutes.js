@@ -114,7 +114,7 @@ const asyncRoutesChildren = [
     path: 'http://www.quasarchs.com/vue-components/button',
     name: 'external-link',
     meta: {
-      roles: ['admin', 'editor'],
+      roles: ['adminsss', 'editor'],
       title: '外部链接/更多组件',
       icon: 'send'
     }

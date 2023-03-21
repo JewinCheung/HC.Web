@@ -17,9 +17,16 @@ export function login (parameter) {
   })
 }
 
-export function getUserInfo () {
+export function getCustomerInfo () {
   return axios({
     url: 'order/customer/getInfo',
+    method: 'get'
+  })
+}
+
+export function getUserInfo () {
+  return axios({
+    url: '/getInfo',
     method: 'get'
   })
 }

@@ -38,6 +38,7 @@ const user = {
         login(userInfo).then(response => {
           if (response) {
             localStorage.setItem('access_token', response.token)
+            console.log(response)
             commit('SET_TOKEN', response.toke)
             resolve(response)
           } else {
@@ -49,12 +50,14 @@ const user = {
       })
     },
 
-    GetCustomerInfo ({ commit }) {
+    GetUserInfo ({ commit }) {
       return new Promise((resolve, reject) => {
         getUserInfo().then(response => {
           if (response.code === 200) {
-            LocalStorage.set('customer_Info', response.data)
-            commit('SET_INFO', response.data)
+            LocalStorage.set('user_info', response.user)
+            LocalStorage.set('user_role', response.roles[0])
+            console.log(response.roles[0])
+            commit('SET_INFO', response.user)
             resolve(response)
           } else {
             reject(response)
@@ -64,6 +67,23 @@ const user = {
         })
       })
     },
+
+    // GetCustomerInfo ({ commit }) {
+    //   return new Promise((resolve, reject) => {
+    //     getCustomerInfo().then(response => {
+    //       if (response.code === 200) {
+    //         LocalStorage.set('customer_Info', response.data)
+    //         commit('SET_INFO', response.data)
+    //         resolve(response)
+    //       } else {
+    //         reject(response)
+    //       }
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
+
     // 获取用户信息
     GetPermissionList ({ commit }) {
       return new Promise((resolve, reject) => {

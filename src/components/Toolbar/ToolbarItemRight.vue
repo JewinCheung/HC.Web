@@ -17,7 +17,7 @@
       round
       dense
       flat
-      :icon="this.$q.fullscreen.isActive?'fullscreen_exit':'fullscreen'"
+      :icon="this.$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
       v-if="$q.screen.gt.sm"
       @click="fullScreen"
     >
@@ -33,32 +33,60 @@
     <q-btn round dense flat icon="message" v-if="$q.screen.gt.sm">
       <q-tooltip>消息</q-tooltip>
     </q-btn>
-    <q-btn round dense flat icon="notifications">
+    <q-btn round dense flat icon="notifications" class=" q-mr-md">
       <q-badge color="red" text-color floating>2</q-badge>
       <q-tooltip>通知</q-tooltip>
     </q-btn>
-    <q-btn round flat>
+    <q-btn
+      rounded
+      outline
+      padding="4px"
+      color="teal"
+      class="q-btn--no-uppercase q-mr-md"
+    >
+      <div class="relative-position hover-style" title="account">
+        <q-img style="width: 35px; height: 35px; border-radius: 50%;">
+          <span
+            class="bg-teal text-white"
+            style="width: 35px; height: 35px; display: flex; border-radius: 50%; font-size: 15px; align-items: center; justify-content: center; text-align: center; user-select: none;"
+            ><span style="max-width: 90%;">
+              {{this.$q.localStorage.getItem('user_info').nickName.substring(0,1)}}
+            </span></span
+          >
+        </q-img>
+        <span class="q-px-sm text-caption text-bold  text-teal-8"
+          ><span class="q-pr-xs">{{this.$q.localStorage.getItem('user_info').nickName}}</span>
+          <q-icon class="text-teal" name="fa fa-caret-down"></q-icon
+        ></span>
+      </div>
       <q-menu>
-        <div class="row no-wrap q-pa-md">
+        <div class="row q-pa-md bg-teal">
           <div class="column items-center">
             <q-avatar size="72px">
               <img :src="this.$PUBLIC_PATH + 'data/avatar.png'" />
             </q-avatar>
 
-            <!-- <div class="text-subtitle1 q-mt-md q-mb-xs">Hi！ Welcome</div> -->
+            <div class="text-subtitle1 q-mt-md q-mb-xs text-white">Hi！ {{this.$q.localStorage.getItem('user_info').nickName}}</div>
 
-            <q-btn color="primary" label="Logout" size="sm" v-close-popup @click="logout" />
+            <q-btn
+              color="primary"
+              label="退出系统"
+              size="sm"
+              v-close-popup
+              @click="logout"
+            />
           </div>
         </div>
       </q-menu>
-      <q-avatar size="26px">
-        <img :src="this.$PUBLIC_PATH + 'data/avatar.png'" />
-      </q-avatar>
-      <q-tooltip>账号</q-tooltip>
     </q-btn>
     <div class="electron-only">
       <q-btn dense flat icon="minimize" @click="minimize" />
-      <q-btn dense flat :icon="isMaximize?'crop_square':'flip_to_front'" @click="maximize" />
+      <q-btn
+        dense
+        flat
+        :icon="isMaximize ? 'crop_square' : 'flip_to_front'"
+        @click="maximize"
+      />
       <q-btn dense flat icon="close" @click="closeApp" />
     </div>
   </div>
@@ -144,3 +172,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.hover-style:hover {
+  filter: blur(1px);
+}
+</style>

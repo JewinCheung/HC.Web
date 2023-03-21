@@ -11,8 +11,8 @@ Vue.prototype.$title = ' | HC System'
 Vue.prototype.$SildeBar = 'hHh lpR fFf' // 风格二：lHh lpR fFf
 
 // axios 中请求基地址，如果需要请在 axios/axios-config.js 中打开，下面是跨域代理示例
-// Vue.prototype.$baseURL = process.env.NODE_ENV === 'development' ? '/api/' : '生产环境 API'
-Vue.prototype.$baseURL = 'http://221.224.57.205:8887/api' // 'http://221.224.57.205:8887/api' 'http://localhost:8081'
+Vue.prototype.$baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8081' : '/api'
+// Vue.prototype.$baseURL = '/api' // 'http://221.224.57.205:8887/api' 'http://localhost:8081'
 
 // 请求超时时间
 Vue.prototype.$timeOut = 8000

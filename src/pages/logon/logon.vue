@@ -212,7 +212,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['Login', 'GetCustomerInfo']),
+    ...mapActions(['Login', 'GetUserInfo']),
     logon () {
       this.loading = !this.loading
       if (this.username !== '' && this.password !== '') {
@@ -241,16 +241,7 @@ export default {
       if (res.code === 200) {
         // sessionStorage.setItem('access_token', 972784674)
         // sessionStorage.setItem('user_role', this.username)
-        this.$router.push('/').then(e => {
-          this.$q.notify({
-            icon: 'insert_emoticon',
-            // color: 'teal',
-            type: 'info',
-            message: `${timeFix()}，欢迎回来`
-          })
-          this.getCustomerInfo()
-          this.loading = !this.loading
-        })
+        this.getUserInfo()
       } else {
         this.requestFailed(res)
       }
@@ -265,10 +256,20 @@ export default {
       })
       this.loading = !this.loading
     },
-    getCustomerInfo () {
-      this.GetCustomerInfo()
+    getUserInfo () {
+      this.GetUserInfo()
         .then(res => {
-          console.log('获取用户成功')
+          console.log(res)
+          this.$router.push('/').then(e => {
+            this.$q.notify({
+              icon: 'insert_emoticon',
+              // color: 'teal',
+              type: 'info',
+              message: `${timeFix()}，欢迎回来`
+            })
+
+            this.loading = !this.loading
+          })
         })
         .catch(err => {
           this.$q.notify({

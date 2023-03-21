@@ -3,7 +3,7 @@ import constructionRouters from '../router/permissionUtils'
 import deepClone from '../utils/CloneUtils'
 import router, { resetRouter } from '../router'
 import { removeATagView, removeOneSide } from 'components/TagView/TagViewUtils'
-
+import { LocalStorage } from 'quasar'
 const mutations = {
 
   /**
@@ -36,7 +36,7 @@ const mutations = {
     state.routes = []
     state.tagView = []
     localStorage.removeItem('access_token')
-    // sessionStorage.removeItem('user_role')
+    LocalStorage.remove('user_role')
     resetRouter()
   },
 

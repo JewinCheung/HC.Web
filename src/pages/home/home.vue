@@ -281,7 +281,7 @@ export default {
     },
     openUrl () {
       const token = localStorage.getItem('access_token')
-      window.open('http://221.224.57.205:8889/admin/' + token, '_blank')
+      window.open('http://221.224.57.205:8889/admin?token=' + token, '_blank')
     }
   }
 }

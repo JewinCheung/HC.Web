@@ -28,7 +28,7 @@
           class="q-ml-sm q-px-md pull-right"
           to="/ordering"
         ></q-btn>
-                <q-btn
+        <q-btn
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
@@ -38,7 +38,7 @@
           to="/adjust"
         ></q-btn>
 
-         <q-btn
+        <q-btn
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
@@ -47,17 +47,16 @@
           class="q-ml-sm q-px-md pull-right"
           to="/delivery"
         ></q-btn>
-                <q-btn
+        <q-btn
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
           no-caps
           label="发货列表"
-
           class="q-ml-sm q-px-md pull-right"
           to="/delivery-list"
         ></q-btn>
-         <!-- @click="showMineOrdering" -->
+        <!-- @click="showMineOrdering" -->
         <!-- <q-btn
           v-if="$q.screen.gt.xs"
           flat
@@ -66,7 +65,14 @@
           label="我的账户"
           class="q-ml-sm q-px-md pull-right"
         ></q-btn> -->
-        <q-btn class="q-mr-md" dense round flat icon="assignment" @click="showShopping">
+        <q-btn
+          class="q-mr-md"
+          dense
+          round
+          flat
+          icon="assignment"
+          @click="showShopping"
+        >
           <q-badge
             color="red"
             class="text-bold"
@@ -78,21 +84,68 @@
           </q-badge>
         </q-btn>
 
-        <q-btn flat round dense icon="settings" class="q-mr-md" />
-        <q-btn flat round dense icon="fas fa-sign-out-alt" to="/" />
+        <!-- <q-btn flat round dense icon="settings" class="q-mr-md" /> -->
+        <q-btn flat round dense icon="fas fa-sign-out-alt" to="/" class="q-mr-md"/>
+        <q-btn
+          rounded
+          outline
+          padding="4px"
+          color="green-12"
+          class="q-btn--no-uppercase"
+        >
+          <div class="relative-position hover-style" title="account">
+            <q-img style="width: 35px; height: 35px; border-radius: 50%;">
+              <span
+                class="bg-teal text-white"
+                style="width: 35px; height: 35px; display: flex; border-radius: 50%; font-size: 15px; align-items: center; justify-content: center; text-align: center; user-select: none;"
+                ><span style="max-width: 90%;">
+                  {{this.$q.localStorage.getItem('user_info').nickName.substring(0,1)}}
+                </span></span
+              >
+            </q-img>
+            <span class="q-px-sm text-caption text-bold  text-white"
+              ><span class="q-pr-xs">{{
+                this.$q.localStorage.getItem("user_info").nickName
+              }}</span>
+              <q-icon class="text-white" name="fa fa-caret-down"></q-icon
+            ></span>
+          </div>
+          <q-menu>
+            <div class="row q-pa-md bg-teal">
+              <div class="column items-center">
+                <q-avatar size="72px">
+                  <img :src="this.$PUBLIC_PATH + 'data/avatar.png'" />
+                </q-avatar>
+
+                <div class="text-subtitle1 q-mt-md q-mb-xs text-white">
+                  Hi！ {{ this.$q.localStorage.getItem("user_info").nickName }}
+                </div>
+
+                <q-btn
+                  color="primary"
+                  label="退出系统"
+                  size="sm"
+                  v-close-popup
+                  @click="logout"
+                />
+              </div>
+            </div>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
       <!-- bg-white -->
       <div
         class="text-grey-9 text-weight-bold shadow-transition"
         style="background-color: rgb(181, 216, 207);"
-         v-show="getIsHome"
+        v-show="getIsHome"
       >
         <div
           class="row text-center items-center"
           :style="$q.platform.is.desktop ? 'height: 38px' : ''"
         >
           <div
-            class="col q-ma-sm cursor-pointer hover-blue"
+            class="q-ma-sm cursor-pointer hover-blue"
+            :class="MaterialClass.length<4?'col-3':'col'"
             v-for="items in MaterialClass"
             :key="items.id"
           >
@@ -108,11 +161,11 @@
                 class="text-caption text-white"
                 style="background: #328163 !important;"
                 v-for="item in items.children"
-                 :key="item.id"
-                 @click="checkedClass(item)"
+                :key="item.id"
+                @click="checkedClass(item)"
               >
                 <q-item clickable v-close-popup>
-                  <q-item-section>{{item.label}}</q-item-section>
+                  <q-item-section>{{ item.label }}</q-item-section>
                 </q-item>
                 <q-separator />
               </q-list>
@@ -133,8 +186,8 @@
         </keep-alive>
       </transition>
     </q-page-container>
-     <ShoppingModal ref="shoppingModal" ></ShoppingModal>
-       <MineOrderingModal ref="mineOrderingModal" ></MineOrderingModal>
+    <ShoppingModal ref="shoppingModal"></ShoppingModal>
+    <MineOrderingModal ref="mineOrderingModal"></MineOrderingModal>
   </q-layout>
 </template>
 <script>
@@ -214,7 +267,21 @@ export default {
     },
     showMineOrdering () {
       this.$refs.mineOrderingModal.show()
+    },
+    logout () {
+      this.$store.commit('LOGOUT')
+      window.location.href = '/'
+      window.sessionStorage.clear()
+      // if (process.env.MODE === 'electron') {
+      //   this.$q.electron.remote.getCurrentWindow().setSize(500, 490)
+      //   this.$q.electron.remote.getCurrentWindow().center()
+      // }
     }
   }
 }
 </script>
+<style scoped>
+.hover-style:hover {
+  filter: blur(1px);
+}
+</style>

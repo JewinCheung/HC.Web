@@ -2,7 +2,7 @@ import { setBreadcrumbs } from 'components/Breadcrumbs/BreadcrumbsUtils'
 import LoadingBar from '../components/LoadingBar/LoadingBar'
 import constantRoutes from '../router/constantRoutes'
 import { addTagView, setTagView } from 'components/TagView/TagViewUtils'
-
+// import { LocalStorage } from 'quasar'
 /**
  * Navigation guard and permission verification
  * @param app
@@ -17,7 +17,7 @@ export default async ({ app, router, Vue, store }) => {
     handleTagViewAndBreadcrumbsAndKeepAlive(from, to, store, Vue)
     // 获得token
     const token = localStorage.getItem('access_token')
-
+    // console.log(token)
     // const token = sessionStorage.getItem('access_token')
     // const userRole = sessionStorage.getItem('user_role')
     // 有一个标记表明您已经登录
@@ -31,8 +31,9 @@ export default async ({ app, router, Vue, store }) => {
         next()
       } else {
         // 用户权限不存在的情况，获取用户权限
-        // const userRole = sessionStorage.getItem('user_role')
-        // 并根据权限设置相应的路由
+        // const userRole = LocalStorage.getItem('user_role')
+        // console.log(userRole)
+        // 并根据权限设置相应的路由 admin
         store.commit('SET_ROLES_AND_ROUTES', 'SuperAdmin')
         // 如果系统提示已弃用addresses，则使用spread操作符完成该操作
         // router.addRoute(...store.getters.getRoutes)

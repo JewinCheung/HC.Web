@@ -152,7 +152,7 @@ export default {
       for (const item of this.materialList) {
         total = total + parseFloat(item.materialNum)
       }
-      return total
+      return total.toFixed(4)
     },
     getMaterialList () {
       return this.$store.getters.getMaterial
@@ -166,8 +166,8 @@ export default {
     },
 
     handleOk () {
-      var customerInfo = this.$q.localStorage.getItem('customer_Info')
-      console.log('customerInfo', customerInfo)
+      // var customerInfo = this.$q.localStorage.getItem('customer_Info')
+      // console.log('customerInfo', customerInfo)
       console.log('materialList', this.materialList)
       var orderSaleBList = []
       var materialClassCode = ''
@@ -182,9 +182,9 @@ export default {
         orderSaleBList.push(orderSaleB)
       }
       var OrderSale = {
-        customerId: customerInfo.id,
-        customerCode: customerInfo.code,
-        customerName: customerInfo.name,
+        // customerId: customerInfo.id,
+        // customerCode: customerInfo.code,
+        // customerName: customerInfo.name,
         materialClassCode: materialClassCode,
         orderSaleBList: orderSaleBList
       }
