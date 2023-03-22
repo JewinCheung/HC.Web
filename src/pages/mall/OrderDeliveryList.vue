@@ -105,7 +105,7 @@
                               >发货申请单编号：{{ orde.billNo }}</span
                             >
                           </q-item-label>
-                           <q-item-label lines="1">
+                          <q-item-label lines="1">
                             <span class="text-weight-medium"
                               >订货单编号：{{ orde.saleNo }}</span
                             >
@@ -241,7 +241,7 @@
               <q-card-section>
                 <q-list
                   class="scroll"
-                   style="max-height:calc(100vh - 530px);min-height: 140px;"
+                  style="max-height:calc(100vh - 530px);min-height: 140px;"
                 >
                   <q-item
                     class="row no-wrap q-px-sm full-width justify-between items-center"
@@ -272,6 +272,16 @@
                         <span class="text-grey-8">{{
                           material.materialspec
                         }}</span>
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section v-show="material.price">
+                      <q-item-label caption>
+                        <div
+                          class="text-orange"
+                          style="font-size: 1.1em; font-weight: 600;"
+                        >
+                          单价：{{ material.price }}
+                        </div>
                       </q-item-label>
                     </q-item-section>
                     <q-item-section side>

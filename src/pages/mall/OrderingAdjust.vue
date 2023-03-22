@@ -274,6 +274,16 @@
                         }}</span>
                       </q-item-label>
                     </q-item-section>
+                    <q-item-section v-show="material.price">
+                      <q-item-label caption>
+                        <div
+                          class="text-orange"
+                          style="font-size: 1.1em; font-weight: 600;"
+                        >
+                          单价：{{ material.price }}
+                        </div>
+                      </q-item-label>
+                    </q-item-section>
                     <q-item-section side>
                       <q-item-label caption>
                         调整前：{{ material.saleNum }}

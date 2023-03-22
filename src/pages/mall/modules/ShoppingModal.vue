@@ -16,7 +16,7 @@
         <q-card-section>
           <div class="text-subtitle2 text-grey-8 text-uppercase">
             <div class="q-px-sm q-pb-md">
-              新的订单
+              新的订货单
             </div>
             <hr
               role="separator"
@@ -100,7 +100,7 @@
           <div class="flex justify-end">
             <q-btn
               class="q-my-lg"
-              label="生成订单货"
+              label="生成订货单"
               style="background-color: rgb(136, 58, 43); color: white;width: 200px;"
               @click="handleOk"
             >

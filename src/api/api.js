@@ -47,6 +47,9 @@ const addDelivery = (params) => postAction('/order/delivery', params) // 新增�
 const getDeliveryList = (params) => getAction('/order/delivery/list', params) // 查询发货清单
 const getDeliveryInfo = (key) => getKeyAction('/order/delivery', key) // 查询发货清单明细
 
+const getByUser = () => getAction('/order/account/getByUser')
+const getCustomerInfo = (key) => getKeyAction('/order/customer', key)
+const getOrgList = (params) => getAction('/order/org/list', params)
 export {
   addPermission,
   editPermission,
@@ -80,6 +83,9 @@ export {
   backOrderSale,
   addDelivery,
   getDeliveryList,
-  getDeliveryInfo
+  getDeliveryInfo,
+  getCustomerInfo,
+  getOrgList,
+  getByUser
 
 }

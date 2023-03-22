@@ -39,14 +39,14 @@ axios.interceptors.request.use(
       }
     }
 
-    // if (config.method === 'put') {
-    //   config.headers['X-HTTP-Method-Override'] = 'PUT'
-    //   config.method = 'post'
-    // }
-    // if (config.method === 'delete') {
-    //   config.headers['X-HTTP-Method-Override'] = 'DELETE'
-    //   config.method = 'post'
-    // }
+    if (config.method === 'put') {
+      config.headers['X-HTTP-Method-Override'] = 'PUT'
+      config.method = 'post'
+    }
+    if (config.method === 'delete') {
+      config.headers['X-HTTP-Method-Override'] = 'DELETE'
+      config.method = 'post'
+    }
     return config
   },
   error => {

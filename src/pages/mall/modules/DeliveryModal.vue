@@ -96,7 +96,10 @@
           </q-card-section>
           <q-separator />
           <q-card-section>
-            <q-list class="scroll" style="height: calc(100vh - 460px);min-height: 140px;">
+            <q-list
+              class="scroll"
+              style="height: calc(100vh - 460px);min-height: 140px;"
+            >
               <q-item
                 class="row no-wrap q-px-sm full-width justify-between items-center"
                 v-for="material in orderSale.orderSaleBList"
@@ -122,6 +125,16 @@
                 <q-item-section top>
                   <q-item-label caption>
                     {{ material.materialspec }}
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section v-show="material.price">
+                  <q-item-label caption>
+                    <div
+                      class="text-orange"
+                      style="font-size: 1.1em; font-weight: 600;"
+                    >
+                      单价：{{ material.price }}
+                    </div>
                   </q-item-label>
                 </q-item-section>
                 <q-item-section top>

@@ -69,7 +69,7 @@
             <div class="text-subtitle1 q-mt-md q-mb-xs text-white">Hi！ {{this.$q.localStorage.getItem('user_info').nickName}}</div>
 
             <q-btn
-              color="primary"
+              color="teal-8"
               label="退出系统"
               size="sm"
               v-close-popup

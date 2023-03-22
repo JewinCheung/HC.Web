@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 export default {
 
   // 拼接图片缩略图url

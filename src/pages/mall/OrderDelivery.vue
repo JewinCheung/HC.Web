@@ -50,7 +50,7 @@
 
                 <q-list
                   class="scroll"
-                 style="max-height: calc(100vh - 375px);min-height: 550px;"
+                  style="max-height: calc(100vh - 375px);min-height: 550px;"
                 >
                   <q-infinite-scroll
                     ref="scrollTarget"
@@ -104,7 +104,10 @@
                             </div>
                           </q-item-label>
                           <q-item-label caption>
-                            <div style="font-size: 1.1em; font-weight: 600;" class="text-teal">
+                            <div
+                              style="font-size: 1.1em; font-weight: 600;"
+                              class="text-teal"
+                            >
                               审核数量：{{ orde.totalPassNum }}
                             </div>
                           </q-item-label>
@@ -293,6 +296,16 @@
                         <span class="text-grey-8">{{
                           material.materialspec
                         }}</span>
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section v-show="material.price">
+                      <q-item-label caption>
+                        <div
+                          class="text-orange"
+                          style="font-size: 1.1em; font-weight: 600;"
+                        >
+                          单价：{{ material.price }}
+                        </div>
                       </q-item-label>
                     </q-item-section>
                     <q-item-section
@@ -685,19 +698,21 @@ export default {
     },
     saveSaleOrder () {
       this.visible = true
-      putOrderSale(this.orderSale).then(res => {
-        if (res.code === 200) {
-          this.$message.success('订货单保存成功')
-          this.orderSale.totalNum = res.data.totalNum
-          this.orderInfo.status = res.data.status
-          this.orderInfo.totalNum = res.data.totalNum
-          console.log('saveSaleOrder', this.orderSale)
-        }
-      }).finally(() => {
-        setTimeout(() => {
-          this.visible = false
-        }, 500)
-      })
+      putOrderSale(this.orderSale)
+        .then(res => {
+          if (res.code === 200) {
+            this.$message.success('订货单保存成功')
+            this.orderSale.totalNum = res.data.totalNum
+            this.orderInfo.status = res.data.status
+            this.orderInfo.totalNum = res.data.totalNum
+            console.log('saveSaleOrder', this.orderSale)
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.visible = false
+          }, 500)
+        })
     },
 
     submitSaleOrder () {

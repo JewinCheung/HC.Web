@@ -3,7 +3,7 @@
     <div class="q-py-md fit flex flex-center">
       <div class="fit q-pa-md well">
         <div class=" text-h5 text-bold text-uppercase">
-          <span class="q-pl-md column">订货单列表</span>
+          <span class="q-pl-md column"> 订货单列表</span>
           <q-btn
             flat
             dense
@@ -342,6 +342,17 @@
                         }}</span>
                       </q-item-label>
                     </q-item-section>
+
+                    <q-item-section v-show="material.price">
+                      <q-item-label caption>
+                        <div class="text-orange" style="font-size: 1.1em; font-weight: 600;">
+                          单价：{{
+                          material.price
+                        }}
+                        </div>
+                      </q-item-label>
+                    </q-item-section>
+
                     <q-item-section side>
                       <q-item-label caption v-show="!disable&&!disableTZ">
                         <div style="font-size: 1.1em; " class="text-deep-orange">
@@ -667,7 +678,7 @@ export default {
     setOrderSaleBList (orderSale) {
       orderSale.orderSaleBList.map(item => {
         getMaterDetail(item.materialId).then(res => {
-          console.log('getMaterDetail', res.data)
+          // console.log('getMaterDetail', res.data)
           item.name = res.data.name
           item.materialspec = res.data.materialspec
           item.scalepicPath = res.data.scalepicPath

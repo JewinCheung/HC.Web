@@ -45,11 +45,20 @@ const mallChildRoutesChildren = [
       keepAlive: true
     },
     component: () => import('../pages/mall/OrderDeliveryList')
+  },
+  {
+    path: '/my-account',
+    name: 'my-account',
+    meta: {
+      title: '我的账户',
+      keepAlive: true
+    },
+    component: () => import('../pages/mall/MyAccount')
   }
 ]
 
 /**
- * constantRoutes : Users do not need to log in to access
+ * constantRoutes : Users do not need to log in to access account
  */
 const constantRoutes = [
   // 商城路由

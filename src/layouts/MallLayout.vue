@@ -21,6 +21,7 @@
         <q-space />
         <q-btn
           v-if="$q.screen.gt.xs"
+          icon="fas fa-clipboard-list"
           flat
           no-wrap
           no-caps
@@ -29,6 +30,7 @@
           to="/ordering"
         ></q-btn>
         <q-btn
+          icon="fas fa-file-signature"
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
@@ -39,6 +41,7 @@
         ></q-btn>
 
         <q-btn
+          icon="fas fa-notes-medical"
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
@@ -48,6 +51,7 @@
           to="/delivery"
         ></q-btn>
         <q-btn
+          icon="fas fa-file-export"
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
@@ -57,14 +61,16 @@
           to="/delivery-list"
         ></q-btn>
         <!-- @click="showMineOrdering" -->
-        <!-- <q-btn
+        <q-btn
+          icon="fas fa-address-card"
           v-if="$q.screen.gt.xs"
           flat
           no-wrap
           no-caps
           label="我的账户"
           class="q-ml-sm q-px-md pull-right"
-        ></q-btn> -->
+          to="/my-account"
+        ></q-btn>
         <q-btn
           class="q-mr-md"
           dense
@@ -73,6 +79,11 @@
           icon="assignment"
           @click="showShopping"
         >
+          <q-tooltip
+            content-class="bg-teal text-white shadow-4"
+            :offset="[10, 10]"
+            >新的订货单</q-tooltip
+          >
           <q-badge
             color="red"
             class="text-bold"
@@ -85,12 +96,25 @@
         </q-btn>
 
         <!-- <q-btn flat round dense icon="settings" class="q-mr-md" /> -->
-        <q-btn flat round dense icon="fas fa-sign-out-alt" to="/" class="q-mr-md"/>
+        <q-btn
+          flat
+          round
+          dense
+          icon="fas fa-sign-out-alt"
+          to="/"
+          class="q-mr-md"
+        >
+          <q-tooltip
+            content-class="bg-teal text-white shadow-4"
+            :offset="[10, 10]"
+            >返回系统</q-tooltip
+          >
+        </q-btn>
         <q-btn
           rounded
           outline
           padding="4px"
-          color="green-12"
+          color="teal-6"
           class="q-btn--no-uppercase"
         >
           <div class="relative-position hover-style" title="account">
@@ -99,7 +123,11 @@
                 class="bg-teal text-white"
                 style="width: 35px; height: 35px; display: flex; border-radius: 50%; font-size: 15px; align-items: center; justify-content: center; text-align: center; user-select: none;"
                 ><span style="max-width: 90%;">
-                  {{this.$q.localStorage.getItem('user_info').nickName.substring(0,1)}}
+                  {{
+                    this.$q.localStorage
+                      .getItem("user_info")
+                      .nickName.substring(0, 1)
+                  }}
                 </span></span
               >
             </q-img>
@@ -122,8 +150,8 @@
                 </div>
 
                 <q-btn
-                  color="primary"
-                  label="退出系统"
+                  color="teal-8"
+                  label="退出商城"
                   size="sm"
                   v-close-popup
                   @click="logout"
@@ -145,7 +173,7 @@
         >
           <div
             class="q-ma-sm cursor-pointer hover-blue"
-            :class="MaterialClass.length<4?'col-3':'col'"
+            :class="MaterialClass.length < 4 ? 'col-3' : 'col'"
             v-for="items in MaterialClass"
             :key="items.id"
           >

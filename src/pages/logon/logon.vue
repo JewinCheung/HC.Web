@@ -217,8 +217,8 @@ export default {
       this.loading = !this.loading
       if (this.username !== '' && this.password !== '') {
         const loginParams = {}
-        loginParams.username = this.username
-        loginParams.password = this.password
+        loginParams.username = this.username.trim()
+        loginParams.password = this.password.trim()
 
         this.Login(loginParams)
           .then(res => {
