@@ -492,6 +492,10 @@ const statusMap = {
     status: 'teal',
     text: '已提交'
   },
+  2: {
+    status: 'teal-8',
+    text: '确认中'
+  },
   4: {
     status: 'light-green',
     text: '部分通过'
@@ -514,6 +518,10 @@ const statusBtnMap = {
   1: {
     status: 'teal',
     text: '撤回订货单'
+  },
+  2: {
+    status: 'teal',
+    text: ''
   },
   4: {
     status: 'brown',
@@ -667,6 +675,11 @@ export default {
         }
 
         if (res.data.adjustFlag === 'Y') {
+          this.fourth = false
+          this.disableTZ = true
+          this.disable = true
+        }
+        if (res.data.status === '2') {
           this.fourth = false
           this.disableTZ = true
           this.disable = true

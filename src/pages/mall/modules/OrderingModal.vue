@@ -143,6 +143,10 @@ const statusMap = {
     status: 'warning',
     text: '保存'
   },
+  2: {
+    status: 'teal-8',
+    text: '确认中'
+  },
   1: {
     status: 'teal',
     text: '已提交'

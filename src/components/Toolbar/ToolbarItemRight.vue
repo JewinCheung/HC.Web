@@ -34,7 +34,7 @@
       <q-tooltip>消息</q-tooltip>
     </q-btn>
     <q-btn round dense flat icon="notifications" class=" q-mr-md">
-      <q-badge color="red" text-color floating>2</q-badge>
+      <!-- <q-badge color="red" text-color floating>2</q-badge> -->
       <q-tooltip>通知</q-tooltip>
     </q-btn>
     <q-btn

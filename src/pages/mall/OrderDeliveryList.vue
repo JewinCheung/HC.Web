@@ -327,6 +327,10 @@ const statusMap = {
     status: 'teal',
     text: '已提交'
   },
+  2: {
+    status: 'teal-8',
+    text: '确认中'
+  },
   4: {
     status: 'light-green',
     text: '部分通过'

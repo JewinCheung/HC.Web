@@ -125,12 +125,12 @@
                       </q-item>
                       <q-separator />
                       <q-item class="q-px-sm text-center">
-                        <q-item-section>
+                        <!-- <q-item-section>
                           授信使用额：{{item.accountCreditUsed?item.accountCreditUsed:0}}
                         </q-item-section>
                         <q-item-section>
                           剩余：{{item.accountCredit-item.accountCreditUsed}}
-                        </q-item-section>
+                        </q-item-section> -->
                       </q-item>
                     </q-card>
                   </q-intersection>
