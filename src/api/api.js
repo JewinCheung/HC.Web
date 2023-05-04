@@ -17,6 +17,9 @@ const register = (params) => postAction('/register/submit', params)
 // 客户注册图片上传
 const registerUpload = (params) => postAction('/register/upload', params)
 
+// 修改密码
+const updatePwd = (params) => putAction(`system/user/profile/updatePwd?oldPassword=${params.oldPassword}&newPassword=${params.newPassword}`)
+
 // 商品
 const getTreeList = (params) => getAction('/order/materialClass/treeselect', params) // 商品分类树
 const oneLevel = (params) => getAction('/order/materialClass/oneLevel', params) // 订货商城，显示一级商品分类
@@ -63,6 +66,7 @@ export {
 
   register,
   registerUpload,
+  updatePwd,
   getTreeList,
   oneLevel,
   getListByParentId,

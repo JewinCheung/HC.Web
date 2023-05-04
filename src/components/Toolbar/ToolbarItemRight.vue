@@ -50,12 +50,18 @@
             class="bg-teal text-white"
             style="width: 35px; height: 35px; display: flex; border-radius: 50%; font-size: 15px; align-items: center; justify-content: center; text-align: center; user-select: none;"
             ><span style="max-width: 90%;">
-              {{this.$q.localStorage.getItem('user_info').nickName.substring(0,1)}}
+              {{
+                this.$q.localStorage
+                  .getItem("user_info")
+                  .nickName.substring(0, 1)
+              }}
             </span></span
           >
         </q-img>
         <span class="q-px-sm text-caption text-bold  text-teal-8"
-          ><span class="q-pr-xs">{{this.$q.localStorage.getItem('user_info').nickName}}</span>
+          ><span class="q-pr-xs">{{
+            this.$q.localStorage.getItem("user_info").nickName
+          }}</span>
           <q-icon class="text-teal" name="fa fa-caret-down"></q-icon
         ></span>
       </div>
@@ -66,8 +72,18 @@
               <img :src="this.$PUBLIC_PATH + 'data/avatar.png'" />
             </q-avatar>
 
-            <div class="text-subtitle1 q-mt-md q-mb-xs text-white">Hi！ {{this.$q.localStorage.getItem('user_info').nickName}}</div>
-
+            <div class="text-subtitle1 q-mt-md q-mb-xs text-white">
+              Hi！ {{ this.$q.localStorage.getItem("user_info").nickName }}
+            </div>
+            <q-btn
+            class="q-mb-sm"
+              color="teal-8"
+               size="sm"
+              label="修改密码"
+              v-close-popup
+              @click="updatePwd"
+            />
+            <q-separator />
             <q-btn
               color="teal-8"
               label="退出系统"
@@ -89,12 +105,15 @@
       />
       <q-btn dense flat icon="close" @click="closeApp" />
     </div>
+    <UpdatePwdModal ref="modalForm" @ok="modalFormOk"></UpdatePwdModal>
   </div>
 </template>
 
 <script>
+import UpdatePwdModal from '@/pages/logon/modules/UpdatePwdModal'
 export default {
   name: 'ToolbarItemRight',
+  components: { UpdatePwdModal },
   data () {
     return {
       search: '',
@@ -134,6 +153,10 @@ export default {
       }
     },
 
+    updatePwd () {
+      this.$refs.modalForm.show()
+    },
+
     logout () {
       this.$store.commit('LOGOUT')
       window.location.href = '/'
@@ -142,6 +165,11 @@ export default {
       //   this.$q.electron.remote.getCurrentWindow().setSize(500, 490)
       //   this.$q.electron.remote.getCurrentWindow().center()
       // }
+    },
+    modalFormOk () {
+      setTimeout(() => {
+        this.logout()
+      }, 1000)
     },
 
     // electron
