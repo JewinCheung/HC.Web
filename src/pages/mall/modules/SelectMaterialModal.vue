@@ -424,6 +424,11 @@ export default {
         }
       )
       this.material_class_left = deepClone(materialClassLeft[0])
+      // this.material_class_left.children.map(item => {
+      //   item.expanded = false
+      //   return item
+      // })
+      // expanded
       console.log(this.material_class_left)
     },
     activeClass (id) {

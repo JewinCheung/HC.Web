@@ -52,12 +52,18 @@
                     {{ orderSale.materialClassId_dictText }}</span
                   ></q-item-label
                 >
-                <q-item-label>
-                  确认人：
-                  <span class="text-bold">
-                    {{ orderSale.approver }}</span
-                  ></q-item-label
-                >
+                    <q-item-label>
+                      片区确认：
+                      <span class="text-bold">
+                        {{ orderSale.leadApprover }}</span
+                      ></q-item-label
+                    >
+                    <q-item-label v-if="orderSale.materialClassCode!=='02'">
+                      内勤确认：
+                      <span class="text-bold">
+                        {{ orderSale.approver }}</span
+                      ></q-item-label
+                    >
               </q-item-section>
               <q-item-section top>
                 <q-item-label>
@@ -92,13 +98,16 @@
               style=""
             >
               <span class="q-mb-xs text-subtitle2 text-grey-8">订货单商品</span>
+              <div v-if="orderSale.materialClassCode==='02'">
+                <q-select dense emit-value map-options filled v-model="stockorgId" option-value="id" option-label="name" :options="orgList" label="发货组织" />
+              </div>
             </div>
           </q-card-section>
           <q-separator />
           <q-card-section>
             <q-list
               class="scroll"
-              style="height: calc(100vh - 460px);min-height: 140px;"
+              style="height: calc(100vh - 485px);min-height: 140px;"
             >
               <q-item
                 class="row no-wrap q-px-sm full-width justify-between items-center"
@@ -162,6 +171,7 @@
                       v-model="material.num"
                       dense
                       type="number"
+                      :min="0"
                       @blur="checkNum(material)"
                     />
                   </q-item-label>
@@ -189,7 +199,7 @@
   </q-dialog>
 </template>
 <script>
-import { getMaterDetail, addDelivery } from '@/api/api'
+import { getMaterDetail, addDelivery, getOrgList } from '@/api/api'
 import deepClone from '@/utils/CloneUtils'
 export default {
   name: 'DeliveryModal',
@@ -203,22 +213,39 @@ export default {
         width: '5px',
         opacity: 0.55
       },
-      orderSale: {}
+      orderSale: {},
+      orgList: [],
+      stockorgId: ''
     }
   },
   watch: {},
   computed: {},
+  mounted () {
+
+  },
   methods: {
     show (orderSale) {
       console.log('发货单申请', orderSale)
       this.orderSale = deepClone(orderSale)
+
+      this.stockorgId = this.orderSale.saleorgId
+
+      console.log('orderSale', this.orderSale)
       this.showDialog = true
       this.loading = true
-
+      this.GetOrgList()
       this.setOrderSaleBList(this.orderSale)
     },
     hide () {
       this.showDialog = false
+    },
+    GetOrgList () {
+      getOrgList().then(res => {
+        console.log('getOrgList', res)
+        this.orgList = res.rows.filter(item => {
+          return item.code === '101' || item.code === '102'
+        })
+      })
     },
     setOrderSaleBList (orderSale) {
       orderSale.orderSaleBList.map(item => {
@@ -276,6 +303,7 @@ export default {
         saleorgCode: this.orderSale.saleorgCode,
         saleId: this.orderSale.id,
         saleNo: this.orderSale.billNo,
+        stockorgId: this.stockorgId,
         orderDeliveryBList: orderDeliveryBList
       }
 

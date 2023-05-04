@@ -198,11 +198,12 @@
                       ></q-item-label
                     >
                     <q-item-label>
-                      确认人：
+                      片区确认：
                       <span class="text-bold">
-                        {{ deliveryInfo.approver }}</span
+                        {{ deliveryInfo.leadApprover }}</span
                       ></q-item-label
                     >
+
                   </q-item-section>
                   <q-item-section top>
                     <q-item-label>
@@ -221,6 +222,12 @@
                       确认时间：
                       <span class="text-bold">
                         {{ deliveryInfo.approverTime }}</span
+                      ></q-item-label
+                    >
+                                        <q-item-label v-if="deliveryInfo.materialClassCode!=='02'">
+                      内勤确认：
+                      <span class="text-bold">
+                        {{ deliveryInfo.approver }}</span
                       ></q-item-label
                     >
                   </q-item-section>

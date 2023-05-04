@@ -186,8 +186,8 @@ export default {
   data () {
     return {
       isPwd: true,
-      username: 'admin',
-      password: 'admin123',
+      username: '',
+      password: '',
       defaultOptions: {
         path: this.$PUBLIC_PATH + 'data/imprint-genius.json',
         loop: true

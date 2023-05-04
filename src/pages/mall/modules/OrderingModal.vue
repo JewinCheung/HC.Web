@@ -287,7 +287,18 @@ export default {
       orderSaleB.materialCode = this.material.code
       orderSaleB.materialClassId = this.material.classId
       orderSaleB.num = this.material.materialNum
-      this.orderSale.orderSaleBList.push(orderSaleB)
+      var IsAdd = true
+      this.orderSale.orderSaleBList.map((SaleB) => {
+        if (SaleB.materialId === this.material.id) {
+          IsAdd = false
+
+          SaleB.num = (parseFloat(SaleB.num) + parseFloat(this.material.materialNum)).toFixed(4)
+        }
+        return SaleB
+      })
+      if (IsAdd) {
+        this.orderSale.orderSaleBList.push(orderSaleB)
+      }
 
       console.log('addOrderSale', this.orderSale)
       this.$q

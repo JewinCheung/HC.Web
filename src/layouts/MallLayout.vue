@@ -280,7 +280,7 @@ export default {
           this.MaterialClass = res.data
 
           this.$store.commit('SET_MATERIALCLASS_ALL', res.data)
-          this.$store.commit('SET_MATERIALCLASS', res.data[0])
+          // this.$store.commit('SET_MATERIALCLASS', res.data[0])
         })
         .catch(error => {
           console.log(error)

@@ -233,7 +233,13 @@
                       ></q-item-label
                     >
                     <q-item-label>
-                      确认人：
+                      片区确认：
+                      <span class="text-bold">
+                        {{ orderSale.leadApprover }}</span
+                      ></q-item-label
+                    >
+                    <q-item-label v-if="orderSale.materialClassCode!=='02'">
+                      内勤确认：
                       <span class="text-bold">
                         {{ orderSale.approver }}</span
                       ></q-item-label
@@ -279,9 +285,8 @@
                       icon="add"
                       color="indigo-6"
                       label="添加商品"
-                      v-show="!disable||orderSale.status === '0'"
+                      v-show="!disable || orderSale.status === '0'"
                       @click="selectMaterial(orderSale)"
-
                     >
                     </q-btn>
                     <q-btn
@@ -345,22 +350,25 @@
 
                     <q-item-section v-show="material.price">
                       <q-item-label caption>
-                        <div class="text-orange" style="font-size: 1.1em; font-weight: 600;">
-                          单价：{{
-                          material.price
-                        }}
+                        <div
+                          class="text-orange"
+                          style="font-size: 1.1em; font-weight: 600;"
+                        >
+                          单价：{{ material.price }}
                         </div>
                       </q-item-label>
                     </q-item-section>
 
                     <q-item-section side>
-                      <q-item-label caption v-show="!disable&&!disableTZ">
-                        <div style="font-size: 1.1em; " class="text-deep-orange">
-                      调整前： {{ material.oldnum }}
-                       </div>
+                      <q-item-label caption v-show="!disable && !disableTZ">
+                        <div
+                          style="font-size: 1.1em; "
+                          class="text-deep-orange"
+                        >
+                          调整前： {{ material.oldnum }}
+                        </div>
                       </q-item-label>
                       <q-item-label caption>
-
                         <q-input
                           standout="bg-teal text-white"
                           style="max-width: 80px;text-align: center;"
@@ -368,6 +376,7 @@
                           dense
                           type="number"
                           :disable="disable"
+                          :min="0"
                           @blur="checkNum(material)"
                         />
                       </q-item-label>
@@ -463,7 +472,10 @@
       <!---->
     </div>
     <DeliveryModal ref="deliveryModal" @ok="deliveryModalOk"></DeliveryModal>
-    <SelectMaterialModal ref="selectMaterialModal" @ok="selectMaterialModalOk"></SelectMaterialModal>
+    <SelectMaterialModal
+      ref="selectMaterialModal"
+      @ok="selectMaterialModalOk"
+    ></SelectMaterialModal>
   </div>
 </template>
 
@@ -772,19 +784,21 @@ export default {
     },
     saveSaleOrder () {
       this.visible = true
-      putOrderSale(this.orderSale).then(res => {
-        if (res.code === 200) {
-          this.$message.success('订货单保存成功')
-          this.orderSale.totalNum = res.data.totalNum
-          this.orderInfo.status = res.data.status
-          this.orderInfo.totalNum = res.data.totalNum
-          console.log('saveSaleOrder', this.orderSale)
-        }
-      }).finally(() => {
-        setTimeout(() => {
-          this.visible = false
-        }, 500)
-      })
+      putOrderSale(this.orderSale)
+        .then(res => {
+          if (res.code === 200) {
+            this.$message.success('订货单保存成功')
+            this.orderSale.totalNum = res.data.totalNum
+            this.orderInfo.status = res.data.status
+            this.orderInfo.totalNum = res.data.totalNum
+            console.log('saveSaleOrder', this.orderSale)
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.visible = false
+          }, 500)
+        })
     },
 
     submitSaleOrder () {
@@ -792,46 +806,58 @@ export default {
       //   this.orderSale.nccId = 'NO001'
       //   this.orderSale.nccNo = 'NO001'
       this.visible = true
-      putOrderSale(this.orderSale).then(res => {
-        if (res.code === 200) {
-          this.$message.success('订货单保存成功')
-          this.orderSale.totalNum = res.data.totalNum
-          this.orderInfo.status = res.data.status
-          this.orderInfo.totalNum = res.data.totalNum
-          submitOrderSale(this.orderSale).then(res => {
-            if (res.code === 200) {
-              this.orderSale.statusText = this.statusFilter(1)
-              this.orderSale.status = '1'
-              this.fourth = false
-              this.disableTZ = true
-              this.disable = true
-              this.$message.success('订货单提交成功')
-              this.orderInfo.status = res.data.status
-              this.orderInfo.totalNum = res.data.totalNum
-            }
-          }).finally(() => {
-            setTimeout(() => {
-              this.visible = false
-            }, 500)
-          })
-        }
-      })
+      putOrderSale(this.orderSale)
+        .then(res => {
+          if (res.code === 200) {
+            this.$message.success('订货单保存成功')
+            this.orderSale.totalNum = res.data.totalNum
+            this.orderInfo.status = res.data.status
+            this.orderInfo.totalNum = res.data.totalNum
+            submitOrderSale(this.orderSale)
+              .then(res => {
+                if (res.code === 200) {
+                  this.orderSale.statusText = this.statusFilter(1)
+                  this.orderSale.status = '1'
+                  this.fourth = false
+                  this.disableTZ = true
+                  this.disable = true
+                  this.$message.success('订货单提交成功')
+                  this.orderInfo.status = res.data.status
+                  this.orderInfo.totalNum = res.data.totalNum
+                }
+              })
+              .finally(() => {
+                setTimeout(() => {
+                  this.visible = false
+                }, 500)
+              })
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.visible = false
+          }, 500)
+        })
     },
     submitOrderSaleAdjust () {
-      submitOrderSaleAdjust(this.orderSale).then(res => {
-        if (res.code === 200) {
-          this.fourth = false
-          this.disableTZ = false
-          this.disable = true
-          this.$message.success('订货单调整提交成功')
-          this.orderInfo.status = res.data.status
-          this.orderInfo.totalNum = res.data.totalNum
-        }
-      }).finally(() => {
-        setTimeout(() => {
-          this.visible = false
-        }, 500)
-      })
+      submitOrderSaleAdjust(this.orderSale)
+        .then(res => {
+          if (res.code === 200) {
+            this.fourth = false
+            this.disableTZ = false
+            this.disable = true
+            this.orderSale.adjustFlag = 'Y'
+            this.$message.success('订货单调整提交成功')
+            this.orderInfo.adjustFlag = 'Y'
+            // this.orderInfo.status = res.data.status
+            // this.orderInfo.totalNum = res.data.totalNum
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.visible = false
+          }, 500)
+        })
     },
     handleMaterialDelete (material) {
       console.log('materia', material)
@@ -842,25 +868,27 @@ export default {
           return
         }
       }
-      this.$message.confirm('该商品已保存，是否确认移除:' + material.name).onOk(() => {
-        for (const item of this.orderSale.orderSaleBList) {
-          if (item.id === material.id) {
-            const idx = this.orderSale.orderSaleBList.indexOf(item)
-            if (idx !== -1) {
-              this.orderSale.orderSaleBList.splice(idx, 1)
-              if (!this.orderSale.orderSaleBDelList) {
-                this.orderSale.orderSaleBDelList = []
+      this.$message
+        .confirm('该商品已保存，是否确认移除:' + material.name)
+        .onOk(() => {
+          for (const item of this.orderSale.orderSaleBList) {
+            if (item.id === material.id) {
+              const idx = this.orderSale.orderSaleBList.indexOf(item)
+              if (idx !== -1) {
+                this.orderSale.orderSaleBList.splice(idx, 1)
+                if (!this.orderSale.orderSaleBDelList) {
+                  this.orderSale.orderSaleBDelList = []
+                }
+                if (material.id) {
+                  this.orderSale.orderSaleBDelList.push(material.id)
+                  this.$message.success('移除成功,保存订单后生效')
+                }
+                console.log(material)
+                console.log(this.orderSale)
               }
-              if (material.id) {
-                this.orderSale.orderSaleBDelList.push(material.id)
-                this.$message.success('移除成功,保存订单后生效')
-              }
-              console.log(material)
-              console.log(this.orderSale)
             }
           }
-        }
-      })
+        })
     },
     handleDelete (orderSale) {
       console.log('handleDelete:orderSale', orderSale)
@@ -875,22 +903,24 @@ export default {
     backOrderSale () {
       console.log('backOrderSale', this.orderSale)
       this.visible = true
-      backOrderSale(this.orderSale).then(res => {
-        if (res.code === 200) {
-          this.orderSale.statusText = this.statusFilter(0)
-          this.orderSale.status = '0'
-          this.fourth = false
-          this.disableTZ = true
-          this.disable = false
-          this.$message.success('订货单撤回成功')
-          this.orderInfo.status = res.data.status
-          this.orderInfo.totalNum = res.data.totalNum
-        }
-      }).finally(() => {
-        setTimeout(() => {
-          this.visible = false
-        }, 500)
-      })
+      backOrderSale(this.orderSale)
+        .then(res => {
+          if (res.code === 200) {
+            this.orderSale.statusText = this.statusFilter(0)
+            this.orderSale.status = '0'
+            this.fourth = false
+            this.disableTZ = true
+            this.disable = false
+            this.$message.success('订货单撤回成功')
+            this.orderInfo.status = res.data.status
+            this.orderInfo.totalNum = res.data.totalNum
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.visible = false
+          }, 500)
+        })
     },
     deliveryApply () {
       this.$refs.deliveryModal.show(this.orderSale)
@@ -927,6 +957,7 @@ export default {
     },
     selectMaterialModalOk (materialList) {
       console.log(materialList)
+
       materialList.map(item => {
         const orderSaleB = {}
         orderSaleB.materialId = item.id
@@ -936,7 +967,17 @@ export default {
         orderSaleB.materialspec = item.materialspec
         orderSaleB.scalepicPath = item.scalepicPath
         orderSaleB.num = 1
-        this.orderSale.orderSaleBList.push(orderSaleB)
+        var IsAdd = true
+        this.orderSale.orderSaleBList.map(SaleB => {
+          if (SaleB.materialId === item.id) {
+            IsAdd = false
+            SaleB.num = SaleB.num + 1
+          }
+          return SaleB
+        })
+        if (IsAdd) {
+          this.orderSale.orderSaleBList.push(orderSaleB)
+        }
       })
       this.$refs.selectMaterialModal.hide()
     },

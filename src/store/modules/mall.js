@@ -13,13 +13,21 @@ const mall = {
     SET_MESSAGE: (state, message) => {
       state.message = message
     },
+    UPDATE_MATERIAL: (state, materia) => {
+      state.materia.map(item => {
+        if (item.id === materia.id) {
+          item.materialNum = materia.materialNum
+        }
+        return item
+      })
+    },
     SET_MESSAGE_ADD: (state, materia) => {
       const materiaClone = deepClone(materia)
       let IsAdd = true
       state.materia.map(item => {
         if (item.id === materia.id) {
           IsAdd = false
-          item.materialNum = item.materialNum + materia.materialNum
+          item.materialNum = (parseFloat(item.materialNum) + parseFloat(materia.materialNum)).toFixed(4)
         }
         return item
       })

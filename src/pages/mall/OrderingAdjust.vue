@@ -203,6 +203,12 @@
                         {{ adjustInfo.adjustMoney }}</span
                       ></q-item-label
                     >
+                    <q-item-label>
+                      片区确认：
+                      <span class="text-bold">
+                        {{ adjustInfo.leadApprover }}</span
+                      ></q-item-label
+                    >
                   </q-item-section>
                   <q-item-section top>
                     <q-item-label>
@@ -221,6 +227,12 @@
                       差异金额：
                       <span class="text-bold">
                         {{ adjustInfo.diffMoney }}</span
+                      ></q-item-label
+                    >
+                    <q-item-label v-if="adjustInfo.materialClassCode === '02'">
+                      内勤确认：
+                      <span class="text-bold">
+                        {{ adjustInfo.approver }}</span
                       ></q-item-label
                     >
                   </q-item-section>

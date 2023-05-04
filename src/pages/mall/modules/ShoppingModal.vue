@@ -61,6 +61,7 @@
                     v-model="material.materialNum"
                     dense
                     type="number"
+                    :min="0"
                     @blur="checkNum(material)"
                   />
                 </q-item-label>
@@ -226,6 +227,8 @@ export default {
       if (material.materialNum <= 0) {
         material.materialNum = 1
         this.$message.warning('数量必须大于0')
+      } else {
+        this.$store.commit('UPDATE_MATERIAL', material)
       }
     }
 

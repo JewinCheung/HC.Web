@@ -424,9 +424,10 @@ export default {
   methods: {
     allMaterial () {
       this.active_id = ''
+      this.material_class_left = []
+      this.material = []
       this.$nextTick(() => {
         this.$refs.scrollArea.setScrollPosition(196, 300)
-        this.material = []
       })
       this.$refs.scrollTarget.reset()
       this.$refs.scrollTarget.resume()
@@ -486,12 +487,12 @@ export default {
     activeClass (id) {
       this.IsNull = false
       this.active_id = id
+      this.material = []
       console.log('分类ID', this.active_id)
       // this.$refs.scrollArea.scrollTop = 0
       // console.log('scrollArea', this.$refs.scrollArea)
       this.$nextTick(() => {
         this.$refs.scrollArea.setScrollPosition(196, 300)
-        this.material = []
       })
       this.$refs.scrollTarget.reset()
       this.$refs.scrollTarget.resume()

@@ -45,7 +45,7 @@
                     {{ material.name }}
                     <div class="flex text-grey-6 text-caption">
                       <div>
-                        <span class="text-bold">ID:</span> {{ material.id }}
+                        <span class="text-bold">ID:</span> {{ material.code }}
                       </div>
                     </div>
                   </div>
@@ -205,7 +205,7 @@
 
                                 <!----><!---->
                                 <div
-                                  class="q-my-auto col-6 "
+                                  class="q-my-auto col-5 "
                                   style="font-size: 1.1em; font-weight: 600;"
                                 >
                                   数量：
@@ -217,8 +217,10 @@
                                     v-model="material.materialNum"
                                     dense
                                     type="number"
+                                    :min="0"
                                     @blur="checkNum(material)"
                                   />
+
                                   <!-- <q-input
                                     standout="bg-teal text-white"
                                     v-model.number="material.materialNum"
@@ -228,6 +230,7 @@
                                     @blur="checkNum(material)"
                                   />-->
                                 </div>
+                                <div class="q-my-auto col-1">吨</div>
                               </div>
                             </span>
 

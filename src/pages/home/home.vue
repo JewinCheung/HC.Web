@@ -35,7 +35,7 @@
               </q-card-section>
             </q-card-section>
           </q-card>
-          <q-card class="total">
+          <q-card class="total" @click="openTmsUrl">
             <q-card-section horizontal>
               <q-card-section class="col-8">
                 <div class="text-subtitle2 text-white">
@@ -282,6 +282,10 @@ export default {
     openUrl () {
       const token = localStorage.getItem('access_token')
       window.open('http://221.224.57.205:8889/admin?token=' + token, '_blank')
+    },
+    openTmsUrl () {
+      const token = localStorage.getItem('access_token')
+      window.open('http://221.224.57.205:8886/?token=' + token, '_blank')
     }
   }
 }

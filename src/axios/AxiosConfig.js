@@ -38,6 +38,8 @@ axios.interceptors.request.use(
           break
       }
     }
+    // put、delete请求网关被禁用？
+    // https://blog.csdn.net/weixin_53458434/article/details/118673550
 
     if (config.method === 'put') {
       config.headers['X-HTTP-Method-Override'] = 'PUT'
@@ -47,6 +49,7 @@ axios.interceptors.request.use(
       config.headers['X-HTTP-Method-Override'] = 'DELETE'
       config.method = 'post'
     }
+
     return config
   },
   error => {

@@ -189,7 +189,13 @@
                       ></q-item-label
                     >
                     <q-item-label>
-                      确认人：
+                      片区确认：
+                      <span class="text-bold">
+                        {{ orderSale.leadApprover }}</span
+                      ></q-item-label
+                    >
+                    <q-item-label v-if="orderSale.materialClassCode!=='02'">
+                      内勤确认：
                       <span class="text-bold">
                         {{ orderSale.approver }}</span
                       ></q-item-label
@@ -340,7 +346,7 @@
                           dense
                           type="number"
                           :disable="disable"
-                          :min="1"
+                          :min="0"
                         />
                       </q-item-label>
                     </q-item-section>
