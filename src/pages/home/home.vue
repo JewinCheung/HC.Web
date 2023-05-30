@@ -2,8 +2,24 @@
   <base-content>
     <div class="container q-pa-lg q-col-gutter-md">
       <div class="row justify-between q-col-gutter-md">
-        <div class="col-xs-12 col-md-3 q-gutter-md">
-          <q-card class="income" @click="redirectToUrl('/mall')">
+        <div class="col-xs-12 col-md-3 q-gutter-md" >
+          <q-card v-for=" (menu,index) in menuList" :key="index" :class="menu.class" @click="redirect(menu)">
+            <q-card-section horizontal>
+              <q-card-section class="col-8">
+                <div class="text-subtitle2 text-white">
+                 {{menu.title}}
+                  <q-icon color="yellow" name="shopping_cart" />
+                </div>
+                <div class="text-h6 text-bold q-mt-sm q-mb-xs text-white">
+                   {{menu.name}}
+                </div>
+              </q-card-section>
+              <q-card-section class="col-4">
+                 <q-icon color="grey-1" :name="menu.icon" style="font-size: 62px" />
+              </q-card-section>
+            </q-card-section>
+          </q-card>
+          <!-- <q-card class="income" @click="redirectToUrl()">
             <q-card-section horizontal>
               <q-card-section class="col-8">
                 <div class="text-subtitle2 text-white">
@@ -51,6 +67,22 @@
               </q-card-section>
             </q-card-section>
           </q-card>
+           <q-card class="manager" @click="openAdminUrl">
+            <q-card-section horizontal>
+              <q-card-section class="col-8">
+                <div class="text-subtitle2 text-white">
+                  Platform Manage
+                  <q-icon color="yellow" name="trending_up" />
+                </div>
+               <div class="text-h6 text-bold q-mt-sm q-mb-xs text-white">
+                  平台管理
+                </div>
+              </q-card-section>
+              <q-card-section class="col-4">
+                  <q-icon color="grey-1" name="compare" style="font-size: 62px" />
+              </q-card-section>
+            </q-card-section>
+          </q-card> -->
         </div>
         <div class="col-xs-12 col-md-9">
           <q-card class="cimo-shadow col-11" style="height: 100%;min-height:390px;padding: 3px;">
@@ -144,6 +176,7 @@ import chartPie from '../../assets/js/echarts-1'
 import charts2Option from '../../assets/js/echarts-2'
 import { income, expense, total } from '../../assets/js/echarts-3'
 import chartZ from '../../assets/js/echarts-4'
+import { getSubSys } from '@/api/login'
 
 export default {
   name: 'old_home',
@@ -261,10 +294,68 @@ export default {
           fat: 26.0,
           carbs: 65
         }
-      ]
+      ],
+      menuList: []
+      // menuList: [{
+      //   class: 'income',
+      //   name: '订货商城',
+      //   title: 'Ordering Mall',
+      //   icon: 'local_mall',
+      //   url: '/mall',
+      //   redirect: 'redirectToUrl'
+      // },
+      // {
+      //   class: 'expense',
+      //   name: '订货管理',
+      //   title: 'Ordering Management',
+      //   icon: 'assignment',
+      //   url: 'http://221.224.57.205:8889/admin?token=',
+      //   redirect: 'openUrl'
+      // },
+      // {
+      //   class: 'total',
+      //   name: '物流中心',
+      //   title: 'Logistics Center',
+      //   icon: 'directions_boat',
+      //   url: 'http://221.224.57.205:8886/?token=',
+      //   redirect: 'openTmsUrl'
+      // },
+      // {
+      //   class: 'manager',
+      //   name: '平台管理',
+      //   title: 'Platform Manage',
+      //   icon: 'compare',
+      //   url: 'http://221.224.57.205:8085/sso/login?token=',
+      //   redirect: 'openAdminUrl'
+      // }]
     }
   },
+  mounted () {
+    this.getSubSys()
+  },
   methods: {
+    getSubSys () {
+      this.menuList = []
+      // var menuLists = JSON.stringify(this.menuList)
+      // console.log(menuLists)
+      getSubSys().then(res => {
+        if (res.code === 200) {
+          // console.log(res.data)
+
+          var menuInfo = {}
+          res.data.map(item => {
+            if (JSON.parse(item.remark)) {
+              menuInfo = JSON.parse(item.remark)
+              menuInfo[0].name = item.menuName
+              menuInfo[0].url = item.path
+              this.menuList.push(menuInfo[0])
+            }
+          })
+
+          console.log(this.menuList)
+        }
+      })
+    },
     handleTableClick (e) {
       this.$router.push({
         path: 'tableDetail',
@@ -273,19 +364,26 @@ export default {
         }
       })
     },
-    redirectToUrl (system) {
+    redirect (menu) {
+      this[menu.redirect](menu.url)
+    },
+    redirectToUrl (url) {
       const pathInfo = this.$router.resolve({
-        path: system
+        path: url
       })
       window.open(pathInfo.href, '_blank')
     },
-    openUrl () {
+    openUrl (url) {
       const token = localStorage.getItem('access_token')
-      window.open('http://221.224.57.205:8889/admin?token=' + token, '_blank')
+      window.open(url + token, '_blank')
     },
-    openTmsUrl () {
+    openTmsUrl (url) {
       const token = localStorage.getItem('access_token')
-      window.open('http://221.224.57.205:8886/?token=' + token, '_blank')
+      window.open(url + token, '_blank')
+    },
+    openAdminUrl (url) {
+      const token = localStorage.getItem('access_token')
+      window.open(url + token, '_blank')
     }
   }
 }
@@ -353,6 +451,25 @@ export default {
   background-size: 200% auto;
 }
 
+.manager {
+  width: 100%;
+  background: linear-gradient(to right, #36d1dc 0%, #5b86e5 99%);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 11px 15px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #ffffff;
+  box-shadow: 0 12px 12px -11px #36d1dc;
+  background-size: 200% auto;
+}
+
+.manager:hover {
+  background-position: right center;
+  box-shadow: 0 12px 20px -11px #36d1dc;
+}
 .total:hover {
   background-position: right center;
   box-shadow: 0 12px 20px -11px rgba(240, 115, 200, 0.73);

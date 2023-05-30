@@ -454,6 +454,10 @@ const statusMap = {
   6: {
     status: 'red',
     text: '不通过'
+  },
+  9: {
+    status: 'red',
+    text: '作废'
   }
 }
 
@@ -611,7 +615,7 @@ export default {
           this.disableTZ = false
           this.disable = true
         }
-        if (res.data.status === '6') {
+        if (res.data.status === '6' || res.data.status === '9') {
           this.fourth = false
           this.disableTZ = true
           this.disable = true
@@ -697,8 +701,8 @@ export default {
     },
     getQueryParams (index) {
       var param = Object.assign({}, this.queryParam)
-      // var customerInfo = this.$q.localStorage.getItem('customer_Info')
-      // param.customerId = customerInfo.id
+      var customerInfo = this.$q.localStorage.getItem('customer_Info')
+      param.customerId = customerInfo.id
       param.pageNum = index
       param.pageSize = 20
       param.releaseFlag = 'Y'
@@ -732,7 +736,7 @@ export default {
       this.visible = true
       putOrderSale(this.orderSale).then(res => {
         if (res.code === 200) {
-          this.$message.success('订货单保存成功')
+          // this.$message.success('订货单保存成功')
           this.orderSale.totalNum = res.data.totalNum
           this.orderInfo.status = res.data.status
           this.orderInfo.totalNum = res.data.totalNum

@@ -1,6 +1,6 @@
 <template>
   <q-dialog flat full-height v-model="showDialog" transition-show="slide-left">
-    <q-card square style="min-width: 1080px">
+    <q-card square style="min-width: 1200px">
       <q-card-section class="q-pa-none text-white text-subtitle bg-brown">
         <div class="flex justify-between flex-center">
           <q-btn
@@ -29,7 +29,10 @@
         </div>
       </q-card-section>
       <q-separator />
-      <q-card-section>
+      <q-card-section
+        class="scroll"
+        style="height: calc(100vh - 185px);min-height: 140px;"
+      >
         <q-card flat class="q-pa-sm">
           <q-card-section>
             <div class="flex justify-between align-center items-center">
@@ -52,18 +55,18 @@
                     {{ orderSale.materialClassId_dictText }}</span
                   ></q-item-label
                 >
-                    <q-item-label>
-                      片区确认：
-                      <span class="text-bold">
-                        {{ orderSale.leadApprover }}</span
-                      ></q-item-label
-                    >
-                    <q-item-label v-if="orderSale.materialClassCode!=='02'">
-                      内勤确认：
-                      <span class="text-bold">
-                        {{ orderSale.approver }}</span
-                      ></q-item-label
-                    >
+                <q-item-label>
+                  片区确认：
+                  <span class="text-bold">
+                    {{ orderSale.leadApprover }}</span
+                  ></q-item-label
+                >
+                <q-item-label v-if="orderSale.materialClassCode !== '02'">
+                  内勤确认：
+                  <span class="text-bold">
+                    {{ orderSale.approver }}</span
+                  ></q-item-label
+                >
               </q-item-section>
               <q-item-section top>
                 <q-item-label>
@@ -91,6 +94,136 @@
               </q-item-section>
             </q-item>
           </q-card-section>
+          <q-card-section class="q-py-none">
+            <div
+              class="flex justify-between align-center items-center"
+              style=""
+            >
+              <span class="q-mb-xs text-subtitle2 text-grey-8">运输信息</span>
+              <q-btn
+                @click="openCarAndShipList"
+                class="q-mb-ms bg-indigo-6 text-white q-py-xs"
+                style="background-color: white; color: white;"
+              >
+                <div>选择车船档案</div>
+              </q-btn>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section>
+              <q-form class="full-width" ref="myForm">
+            <q-item class="q-px-none">
+              <q-item-section top>
+                <q-item-label>
+                  <q-select
+                    dense
+                    emit-value
+                    map-options
+                    standout="bg-teal text-white"
+                    v-model="transportType"
+                    :options="dict.type.order_transport_type"
+                    label="运输方式"
+                  />
+                </q-item-label>
+                <q-item-label>
+                  <q-input
+                  clearable
+                    standout="bg-teal text-white"
+                    v-model="orderCarAndShipInfo.cardId"
+                       :rules="[$inputRules.hcodeTest]"
+                    label="身份证"
+                    dense
+                  />
+                </q-item-label>
+                                <q-item-label  class="flex justify-between">
+                  <q-btn
+                  v-show="false"
+                    @click="addCarAndShipInfo"
+                    class="q-mb-ms text-white q-py-xs"
+                    style="background-color: orange; color: white;"
+                    size="12px"
+                  >
+                    <q-icon left size="24px" name="playlist_add" />
+                    <div>添加到车船档案</div>
+                  </q-btn>
+                  <q-btn
+                  v-show="false"
+                    v-if="orderCarAndShipInfo.id"
+                    @click="putOrderCarAndShipInfo(orderCarAndShipInfo)"
+                     size="12px"
+                    class="q-mb-ms bg-primary text-white q-py-xs"
+                    style="background-color: white; color: white;"
+                  >
+                   <q-icon left size="24px" name="save" />
+
+                    <div>保存修改</div>
+                  </q-btn>
+                  <!-- <q-btn
+                    class="text-white q-py-xs full-width"
+                    style="background-color: orange; color: white;"
+                    size="12px"
+                  >
+                    <q-icon left size="24px" name="fas fa-file-import" />
+                    <div>添加到车船档案</div>
+                  </q-btn> -->
+                </q-item-label>
+              </q-item-section>
+              <q-item-section top>
+                <q-item-label>
+                  <q-input
+                    clearable
+                    standout="bg-teal text-white"
+                    v-model="orderCarAndShipInfo.carNumber"
+                    label="车船号"
+                    dense
+                  />
+                </q-item-label>
+                <q-item-label>
+                  <q-input
+                  clearable
+                    standout="bg-teal text-white"
+                    v-model="orderCarAndShipInfo.tonnage"
+                    label="吨位"
+                    dense
+                  />
+                </q-item-label>
+              </q-item-section>
+              <q-item-section top>
+                <q-item-label>
+                  <q-input
+                  clearable
+                    standout="bg-teal text-white"
+                    v-model="orderCarAndShipInfo.driverName"
+                    label="司机姓名"
+                    dense
+                  />
+                </q-item-label>
+                <q-item-label>
+                  <q-input
+                  clearable
+                    standout="bg-teal text-white"
+                    v-model="orderCarAndShipInfo.loads"
+                    label="荷载"
+                    dense
+                  />
+                </q-item-label>
+              </q-item-section>
+              <q-item-section top >
+                <q-item-label>
+                  <q-input
+                  clearable
+                    standout="bg-teal text-white"
+                    v-model="orderCarAndShipInfo.phone"
+                       :rules="[$inputRules.phoneTest]"
+                    label="电话"
+                    dense
+                  />
+                </q-item-label>
+
+              </q-item-section>
+            </q-item>
+             </q-form>
+          </q-card-section>
 
           <q-card-section class="q-py-none">
             <div
@@ -98,8 +231,18 @@
               style=""
             >
               <span class="q-mb-xs text-subtitle2 text-grey-8">订货单商品</span>
-              <div v-if="orderSale.materialClassCode==='02'">
-                <q-select dense emit-value map-options filled v-model="stockorgId" option-value="id" option-label="name" :options="orgList" label="发货组织" />
+              <div v-if="orderSale.materialClassCode === '02'">
+                <q-select
+                  dense
+                  emit-value
+                  map-options
+                  filled
+                  v-model="stockorgId"
+                  option-value="orgId"
+                  option-label="orgName"
+                  :options="orgList"
+                  label="发货组织"
+                />
               </div>
             </div>
           </q-card-section>
@@ -181,7 +324,7 @@
           </q-card-section>
         </q-card>
       </q-card-section>
-      <q-card-actions class="q-pa-md bg-grey-2">
+      <q-card-actions class="q-pa-md bg-grey-2" v-show="showDelivery">
         <q-btn
           class="full-width q-py-xs"
           style=""
@@ -196,16 +339,27 @@
         </slot>
       </template>
     </q-card>
+    <CarAndShipModal ref="modalForm" @ok="modalFormOk"></CarAndShipModal>
   </q-dialog>
 </template>
 <script>
-import { getMaterDetail, addDelivery, getOrgList } from '@/api/api'
+import {
+  getMaterDetail,
+  addDelivery,
+  getOrgs,
+  addOrderCarAndShipInfo,
+  putOrderCarAndShipInfo
+} from '@/api/api'
+import CarAndShipModal from '@/pages/mall/modules/CarAndShipModal'
 import deepClone from '@/utils/CloneUtils'
 export default {
   name: 'DeliveryModal',
+  components: { CarAndShipModal },
+  dicts: ['order_transport_type'],
   data () {
     return {
       showDialog: false,
+      showDelivery: false,
       loading: false,
       thumbStyle: {
         right: '2px',
@@ -215,40 +369,74 @@ export default {
       },
       orderSale: {},
       orgList: [],
-      stockorgId: ''
+      stockorgId: '',
+      orderCarAndShipInfo: {
+        carNumber: '',
+        driverName: '',
+        loads: '',
+        tonnage: '',
+        phone: '',
+        cardId: '',
+        transportType: ''
+      },
+      transportType: '',
+      // 自提汽运', '自提船运', '代办汽运', '代办船运'
+      transportTypeOptions: [
+        {
+          label: '自提汽运',
+          value: 1
+        },
+        {
+          label: '自提船运',
+          value: 2
+        },
+        {
+          label: '代办汽运',
+          value: 3
+        },
+        {
+          label: '代办船运',
+          value: 4
+        }
+      ]
     }
   },
   watch: {},
   computed: {},
-  mounted () {
-
-  },
+  mounted () {},
   methods: {
     show (orderSale) {
       console.log('发货单申请', orderSale)
       this.orderSale = deepClone(orderSale)
-
+      this.showDelivery = false
       this.stockorgId = this.orderSale.saleorgId
-
+      this.orderCarAndShipInfo = {}
+      this.transportType = ''
       console.log('orderSale', this.orderSale)
       this.showDialog = true
       this.loading = true
       this.GetOrgList()
       this.setOrderSaleBList(this.orderSale)
+      console.log('dict', this.dict.type.order_transport_type)
     },
     hide () {
       this.showDialog = false
     },
     GetOrgList () {
-      getOrgList().then(res => {
+      var param = { materialclassId: this.orderSale.materialClassId }
+      getOrgs(param).then(res => {
         console.log('getOrgList', res)
-        this.orgList = res.rows.filter(item => {
-          return item.code === '101' || item.code === '102'
-        })
+        this.orgList = res.data
+        // this.orgList = res.rows.filter(item => {
+        //   return item.code === '101' || item.code === '102'
+        // })
+        // console.log('orgList', this.orgList)
       })
     },
     setOrderSaleBList (orderSale) {
+      var deliveryTotalNum = 0
       orderSale.orderSaleBList.map(item => {
+        deliveryTotalNum = deliveryTotalNum + item.deliveryNum
         getMaterDetail(item.materialId).then(res => {
           item.name = res.data.name
           item.num = parseFloat(item.passNum) - parseFloat(item.deliveryNum)
@@ -257,7 +445,10 @@ export default {
         })
         return item
       })
-
+      console.log('deliveryTotalNum', deliveryTotalNum)
+      if (orderSale.totalPassNum !== deliveryTotalNum) {
+        this.showDelivery = true
+      }
       setTimeout(() => {
         this.loading = false
       }, 500)
@@ -304,7 +495,14 @@ export default {
         saleId: this.orderSale.id,
         saleNo: this.orderSale.billNo,
         stockorgId: this.stockorgId,
-        orderDeliveryBList: orderDeliveryBList
+        orderDeliveryBList: orderDeliveryBList,
+        carNumber: this.orderCarAndShipInfo.carNumber,
+        driverName: this.orderCarAndShipInfo.driverName,
+        loads: this.orderCarAndShipInfo.loads,
+        tonnage: this.orderCarAndShipInfo.tonnage,
+        phone: this.orderCarAndShipInfo.phone,
+        cardId: this.orderCarAndShipInfo.cardId,
+        transportType: this.transportType
       }
 
       console.log('OrderDelivery', OrderDelivery)
@@ -336,6 +534,51 @@ export default {
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
         })
+    },
+    addCarAndShipInfo () {
+      this.orderCarAndShipInfo.customerId = this.orderSale.customerId
+      console.log('CarAndShipInfo', this.orderCarAndShipInfo)
+      this.$refs.myForm.validate().then(success => {
+        this.orderCarAndShipInfo.id = ''
+        if (success) {
+          addOrderCarAndShipInfo(this.orderCarAndShipInfo).then(res => {
+            if (res.code === 200) {
+              this.$message.success('添加到车船档案')
+            }
+          })
+        }
+      })
+
+      // getOrderCarAndShipList().then(res => {
+      //   var data = res.data
+      //   console.log('getOrderCarAndShipList', data)
+      // })
+    },
+
+    putOrderCarAndShipInfo (orderCarAndShipInfo) {
+      console.log('CarAndShipInfo', orderCarAndShipInfo)
+      this.$refs.myForm.validate().then(success => {
+        if (success) {
+          putOrderCarAndShipInfo(orderCarAndShipInfo).then(res => {
+            if (res.code === 200) {
+              this.$message.success('车船档案修改成功')
+            }
+          })
+        }
+      })
+
+      // getOrderCarAndShipList().then(res => {
+      //   var data = res.data
+      //   console.log('getOrderCarAndShipList', data)
+      // })
+    },
+
+    openCarAndShipList () {
+      this.$refs.modalForm.Ordering()
+    },
+    modalFormOk (orde) {
+      var orderCarAndShipInfo = deepClone(orde)
+      this.orderCarAndShipInfo = orderCarAndShipInfo
     }
   }
 }

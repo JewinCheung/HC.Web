@@ -203,7 +203,6 @@
                         {{ deliveryInfo.leadApprover }}</span
                       ></q-item-label
                     >
-
                   </q-item-section>
                   <q-item-section top>
                     <q-item-label>
@@ -224,7 +223,9 @@
                         {{ deliveryInfo.approverTime }}</span
                       ></q-item-label
                     >
-                                        <q-item-label v-if="deliveryInfo.materialClassCode!=='02'">
+                    <q-item-label
+                      v-if="deliveryInfo.materialClassCode !== '02'"
+                    >
                       内勤确认：
                       <span class="text-bold">
                         {{ deliveryInfo.approver }}</span
@@ -234,6 +235,52 @@
                 </q-item>
               </q-card-section>
 
+          <q-card-section class="q-py-none">
+            <div
+              class="flex justify-between align-center items-center"
+              style=""
+            >
+              <span class="q-mb-xs text-subtitle2 text-grey-8">运输信息</span>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section>
+              <q-form class="full-width" ref="myForm">
+            <q-item class="q-px-none">
+              <q-item-section top class="col-4">
+                <q-item-label>
+                  运输方式：{{deliveryInfo.transportType?transportTypeFilter(deliveryInfo.transportType):'' }}
+                </q-item-label>
+                <q-item-label>
+                  身份证号：{{deliveryInfo.cardId}}
+
+                </q-item-label>
+              </q-item-section>
+              <q-item-section top>
+                <q-item-label>
+                    车船号：{{deliveryInfo.carNumber}}
+                </q-item-label>
+                <q-item-label>
+                      吨位：{{deliveryInfo.tonnage}}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section top>
+                <q-item-label>
+                   司机姓名：{{deliveryInfo.driverName}}
+
+                </q-item-label>
+                <q-item-label>
+                   荷载：{{deliveryInfo.loads}}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section top >
+                <q-item-label>
+                   电话：{{deliveryInfo.phone}}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+             </q-form>
+          </q-card-section>
               <q-card-section class="q-py-none">
                 <div
                   class="flex justify-between align-center items-center"
@@ -349,11 +396,31 @@ const statusMap = {
   6: {
     status: 'red',
     text: '不通过'
+  },
+  9: {
+    status: 'red',
+    text: '作废'
   }
 }
 
+// const transportTypeMap = {
+//   1: {
+//     label: '自提汽运'
+//   },
+//   2: {
+//     label: '自提船运'
+//   },
+//   3: {
+//     label: '代办汽运'
+//   },
+//   4: {
+//     label: '代办船运'
+//   }
+// }
+
 export default {
   name: 'OrderDeliveryList',
+  dicts: ['order_transport_type'],
   data () {
     return {
       keyWord: '',
@@ -374,6 +441,9 @@ export default {
     statusTypeFilter (type) {
       return statusMap[type].status
     }
+    // transportTypeFilter (type) {
+    //   return transportTypeMap[type].label
+    // }
   },
   watch: {
     isSearch (n, o) {
@@ -387,6 +457,16 @@ export default {
   methods: {
     statusFilter (type) {
       return statusMap[type].text
+    },
+    transportTypeFilter (type) {
+      var transportTypeMap = this.dict.type.order_transport_type
+      // console.log('transportTypeMap', transportTypeMap)
+      // console.log('type', type)
+      var transportType = transportTypeMap.filter(item => {
+        return item.value === type
+      })
+      console.log('transportType', transportType)
+      return transportType[0].label
     },
     close () {
       this.orderTab = 'col-md-12'
@@ -469,8 +549,8 @@ export default {
     },
     getQueryParams (index) {
       var param = Object.assign({}, this.queryParam)
-      // var customerInfo = this.$q.localStorage.getItem('customer_Info')
-      // param.customerId = customerInfo.id
+      var customerInfo = this.$q.localStorage.getItem('customer_Info')
+      param.customerId = customerInfo.id
       param.pageNum = index
       param.pageSize = 20
       param.column = 'createTime'

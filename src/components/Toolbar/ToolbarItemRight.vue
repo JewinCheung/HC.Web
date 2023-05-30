@@ -159,8 +159,8 @@ export default {
 
     logout () {
       this.$store.commit('LOGOUT')
-      window.location.href = '/'
-      window.sessionStorage.clear()
+      // window.location.href = '/'
+      // window.sessionStorage.clear()
       // if (process.env.MODE === 'electron') {
       //   this.$q.electron.remote.getCurrentWindow().setSize(500, 490)
       //   this.$q.electron.remote.getCurrentWindow().center()

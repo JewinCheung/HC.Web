@@ -53,6 +53,15 @@ const getDeliveryInfo = (key) => getKeyAction('/order/delivery', key) // 查询�
 const getByUser = () => getAction('/order/account/getByUser')
 const getCustomerInfo = (key) => getKeyAction('/order/customer', key)
 const getOrgList = (params) => getAction('/order/org/list', params)
+const getOrgs = (params) => getAction('/order/materialClass/getOrgs', params)
+
+const getOrderCarAndShipList = (params) => getAction('/order/carAndShip/list', params) // 查询车船档案
+const addOrderCarAndShipInfo = (params) => postAction('/order/carAndShip', params) // 新增车船档案
+const putOrderCarAndShipInfo = (params) => putAction('/order/carAndShip', params) // 修改车船档案
+const deleteOrderCarAndShipInfo = (keys) => deleteKeysAction('/order/carAndShip', keys) // 删除车船档案
+
+const getDicts = (key) => getKeyAction('/system/dict/data/type/', key) // 根据字典类型查询字典数据信息
+
 export {
   addPermission,
   editPermission,
@@ -90,6 +99,12 @@ export {
   getDeliveryInfo,
   getCustomerInfo,
   getOrgList,
-  getByUser
+  getByUser,
+  getOrderCarAndShipList,
+  addOrderCarAndShipInfo,
+  putOrderCarAndShipInfo,
+  deleteOrderCarAndShipInfo,
+  getOrgs,
+  getDicts
 
 }

@@ -401,6 +401,10 @@
                       >
                         通过数量： {{ material.passNum }}
                       </q-item-label>
+                   <q-item-label class="q-mt-xs text-body2  text-deep-orange">
+                    <span class="cursor-pointer">已发货数量：</span>
+                    <span> {{ material.deliveryNum }}</span>
+                  </q-item-label>
                     </q-item-section>
 
                     <q-item-section top side>
@@ -519,6 +523,10 @@ const statusMap = {
   6: {
     status: 'red',
     text: '不通过'
+  },
+  9: {
+    status: 'red',
+    text: '作废'
   }
 }
 
@@ -680,7 +688,7 @@ export default {
           this.disableTZ = false
           this.disable = true
         }
-        if (res.data.status === '6') {
+        if (res.data.status === '6' || res.data.status === '9') {
           this.fourth = false
           this.disableTZ = true
           this.disable = true
@@ -773,8 +781,8 @@ export default {
     },
     getQueryParams (index) {
       var param = Object.assign({}, this.queryParam)
-      // var customerInfo = this.$q.localStorage.getItem('customer_Info')
-      // param.customerId = customerInfo.id
+      var customerInfo = this.$q.localStorage.getItem('customer_Info')
+      param.customerId = customerInfo.id
       param.pageNum = index
       param.pageSize = 20
       param.releaseFlag = 'Y'
@@ -788,6 +796,8 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.$message.success('订货单保存成功')
+
+            this.getOrderSaleInfo(this.orderInfo)
             this.orderSale.totalNum = res.data.totalNum
             this.orderInfo.status = res.data.status
             this.orderInfo.totalNum = res.data.totalNum
@@ -806,31 +816,25 @@ export default {
       //   this.orderSale.nccId = 'NO001'
       //   this.orderSale.nccNo = 'NO001'
       this.visible = true
-      putOrderSale(this.orderSale)
+      // putOrderSale(this.orderSale)
+      //   .then(res => {
+      //     if (res.code === 200) {
+      //  this.$message.success('订货单保存成功')
+      // this.orderSale.totalNum = res.data.totalNum
+      // this.orderInfo.status = res.data.status
+      // this.orderInfo.totalNum = res.data.totalNum
+      submitOrderSale(this.orderSale)
         .then(res => {
           if (res.code === 200) {
-            this.$message.success('订货单保存成功')
-            this.orderSale.totalNum = res.data.totalNum
+            this.orderSale.statusText = this.statusFilter(1)
+            this.orderSale.status = '1'
+            this.fourth = false
+            this.disableTZ = true
+            this.disable = true
+            this.$message.success('订货单提交成功')
             this.orderInfo.status = res.data.status
             this.orderInfo.totalNum = res.data.totalNum
-            submitOrderSale(this.orderSale)
-              .then(res => {
-                if (res.code === 200) {
-                  this.orderSale.statusText = this.statusFilter(1)
-                  this.orderSale.status = '1'
-                  this.fourth = false
-                  this.disableTZ = true
-                  this.disable = true
-                  this.$message.success('订货单提交成功')
-                  this.orderInfo.status = res.data.status
-                  this.orderInfo.totalNum = res.data.totalNum
-                }
-              })
-              .finally(() => {
-                setTimeout(() => {
-                  this.visible = false
-                }, 500)
-              })
+            this.getOrderSaleInfo(this.orderInfo)
           }
         })
         .finally(() => {
@@ -838,6 +842,13 @@ export default {
             this.visible = false
           }, 500)
         })
+      // }
+        // })
+        // .finally(() => {
+        //   setTimeout(() => {
+        //     this.visible = false
+        //   }, 500)
+        // })
     },
     submitOrderSaleAdjust () {
       submitOrderSaleAdjust(this.orderSale)
@@ -914,6 +925,7 @@ export default {
             this.$message.success('订货单撤回成功')
             this.orderInfo.status = res.data.status
             this.orderInfo.totalNum = res.data.totalNum
+            this.getOrderSaleInfo(this.orderInfo)
           }
         })
         .finally(() => {

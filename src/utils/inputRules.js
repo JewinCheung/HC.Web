@@ -60,6 +60,15 @@ export const hcodeTest = (v) => {
   return t
 }
 
+export const carNumberTest = (v) => {
+  let t = null
+  const p = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/
+  if (v && !p.test(v)) {
+    t = '车牌格式错误'
+  }
+  return t
+}
+
 export const confirmPassword = (pwd) => (v) => v === pwd || '两次密码输入不一致'
 
-export default { requiredTest, requiredNull }
+export default { requiredTest, requiredNull, hcodeTest, phoneTest, carNumberTest }

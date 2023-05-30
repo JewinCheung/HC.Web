@@ -363,6 +363,10 @@ const statusMap = {
   6: {
     status: 'red',
     text: '不通过'
+  },
+  9: {
+    status: 'red',
+    text: '作废'
   }
 }
 
@@ -536,8 +540,8 @@ export default {
     },
     getQueryParams (index) {
       var param = Object.assign({}, this.queryParam)
-      // var customerInfo = this.$q.localStorage.getItem('customer_Info')
-      // param.customerId = customerInfo.id
+      var customerInfo = this.$q.localStorage.getItem('customer_Info')
+      param.customerId = customerInfo.id
       param.pageNum = index
       param.pageSize = 20
       param.column = 'createTime'

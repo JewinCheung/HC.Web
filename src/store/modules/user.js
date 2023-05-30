@@ -58,6 +58,23 @@ const user = {
             LocalStorage.set('user_role', response.roles[0])
             console.log(response.roles[0])
             commit('SET_INFO', response.user)
+            var customerInfo = {}
+            if (response.user.entityId) {
+              customerInfo.id = response.user.entityId
+              LocalStorage.set('customer_Info', customerInfo)
+            } else {
+              customerInfo.id = '无'
+              LocalStorage.set('customer_Info', customerInfo)
+            }
+            // getCustomerInfo().then(response => {
+            //   if (response.code === 200) {
+            //     LocalStorage.set('customer_Info', response.data)
+            //   } else {
+            //     var customerInfo = {}
+            //     customerInfo.id = '无'
+            //     LocalStorage.set('customer_Info', customerInfo)
+            //   }
+            // })
             resolve(response)
           } else {
             reject(response)
@@ -101,8 +118,8 @@ const user = {
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
         commit('LOGOUT')
-        window.location.href = '/'
-        window.sessionStorage.clear()
+        // window.location.href = '/'
+        // window.sessionStorage.clear()
         // logout().then(() => {
         //   resolve()
         // }).catch(() => {

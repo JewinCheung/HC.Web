@@ -65,6 +65,7 @@ axios.interceptors.response.use(
     if (response.request.responseType === 'blob' || response.request.responseType === 'arraybuffer') {
       return response.data
     }
+
     if (code === 200) {
       return response.data
     } else {

@@ -1,20 +1,21 @@
 <template>
   <q-dialog flat full-height v-model="showDialog">
-    <q-card style="min-width: 1080px">
+    <q-card style="min-width: 1200px">
       <q-btn flat dense color="black" class="q-mt-lg q-ml-lg" v-close-popup>
         <q-icon
           class="q-mr-sm"
           name="fas fa-chevron-left"
           style="font-size: 0.8rem;"
         />
-        返回商品
+        返回申请发货
       </q-btn>
       <q-card flat class="col q-pa-sm  q-px-md  text-left  no-shadow  ">
         <q-card-section>
           <div class="text-subtitle2 text-grey-8">
             <div class="text-weight-bolder q-px-sm q-pb-md">
-              订单货列表
+              车船档案列表（点击选择）
             </div>
+
             <hr
               role="separator"
               aria-orientation="horizontal"
@@ -43,6 +44,7 @@
                 </q-input>
                 <q-space />
                 <q-btn round flat icon="refresh" @click="refresh" />
+                 <q-btn round flat icon="add" @click="handleAdd" />
               </q-toolbar>
               <q-separator spaced />
 
@@ -62,7 +64,7 @@
                     v-show="IsNull"
                   >
                     <span class="q-pa-lg">
-                      暂无订货单！
+                      暂无车船档案！
                     </span>
                   </div>
                   <div v-for="orde in saleOrdeing" :key="orde.id">
@@ -70,46 +72,64 @@
                       clickable
                       v-ripple
                       class="q-px-sm full-width justify-between items-center"
-                      @click="addMaterial(orde)"
+                      @click="handleOk(orde)"
                     >
-                      <q-item-section side class="col-5  q-mt-sm">
-                        <q-item-label lines="1">
-                          <span class="text-weight-bold text-weight-medium"
-                            >订货单编号：{{ orde.billNo }}</span
-                          >
+                      <q-item-section side class="col  q-mt-sm">
+                        <q-item-label>
+                          <span>车船号码：{{ orde.carNumber }}</span>
                         </q-item-label>
-                        <q-item-label caption lines="1">
-                          <span
-                            class="cursor-pointerq-mt-xs text-body2 text-weight-bold text-negative"
-                            >{{
-                              orde.adjustFlag === "Y" ? "[订单调整中]" : ""
-                            }}</span
-                          >
-                        </q-item-label>
-                        <q-item-label caption>
-                          {{ orde.createTime }}
+                        <q-item-label>
+                          <span>司机姓名：{{ orde.driverName }}</span>
                         </q-item-label>
                       </q-item-section>
-                      <q-item-section>
+
+                      <q-item-section class="col  q-mt-sm">
+                        <q-item-label>
+                          <span>电话号码：{{ orde.phone }}</span>
+                        </q-item-label>
+                        <q-item-label>
+                          <span>身份证号：{{ orde.cardId }}</span>
+                        </q-item-label>
+                      </q-item-section>
+                      <!-- <q-item-section class="col  q-mt-sm">
+                        <q-item-label>
+                          <span>运输方式：{{ orde.transportType }}</span>
+                        </q-item-label>
+                      </q-item-section> -->
+                      <q-item-section side>
                         <q-item-label class="q-mt-xs text-body2">
                           <span class="cursor-pointer">
-                            {{ orde.materialClassId_dictText }}</span
+                            荷载： {{ orde.loads }}</span
                           >
                         </q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
                         <q-item-label caption>
                           <div style="font-size: 1.1em; font-weight: 600;">
-                            总计： {{ orde.totalNum }}
+                            吨位： {{ orde.tonnage }}
                           </div>
                         </q-item-label>
                       </q-item-section>
-                      <q-item-section side class="q-mx-md">
-                        <q-btn dense class="bg-teal text-white" >
-                          <q-icon left name="reply_all" class="rotate-180" />
-                          <div class="q-mx-sm">加入</div>
-                        </q-btn>
-                      </q-item-section>
+                    <q-item-section top side>
+                      <div class="text-grey-8 q-gutter-xs">
+                                                <q-btn
+                          class="text-teal"
+                          size="12px"
+                          flat
+                          dense
+                          round
+                          icon="edit"
+                          @click.stop="handleEdit(orde)"
+                        />
+                        <q-btn
+                          class="text-red-3"
+                          size="12px"
+                          flat
+                          dense
+                          round
+                          icon="delete"
+                          @click.stop="handleDelete(orde)"
+                        />
+                      </div>
+                    </q-item-section>
                       <!-- <q-item-section side class="q-mx-sm">
                       <q-btn
                         disable
@@ -135,42 +155,15 @@
         </q-card-section>
       </q-card>
     </q-card>
+        <UpdateCarAndShipModal ref="modalForm" @ok="modalFormOk"></UpdateCarAndShipModal>
   </q-dialog>
 </template>
 <script>
-const statusMap = {
-  0: {
-    status: 'warning',
-    text: '保存'
-  },
-  2: {
-    status: 'teal-8',
-    text: '确认中'
-  },
-  1: {
-    status: 'teal',
-    text: '已提交'
-  },
-  4: {
-    status: 'light-green',
-    text: '部分通过'
-  },
-  5: {
-    status: 'green',
-    text: '通过'
-  },
-  6: {
-    status: 'red',
-    text: '不通过'
-  },
-  9: {
-    status: 'red',
-    text: '作废'
-  }
-}
-import { getOrderSaleList, putOrderSale, getOrderSaleInfo } from '@/api/api'
+import { getOrderCarAndShipList, deleteOrderCarAndShipInfo } from '@/api/api'
+import UpdateCarAndShipModal from '@/pages/mall/modules/UpdateCarAndShipModal'
 export default {
-  name: 'OrderingModal',
+  name: 'CarAndShipModal',
+  components: { UpdateCarAndShipModal },
   data () {
     return {
       showDialog: false,
@@ -180,16 +173,18 @@ export default {
       isSearch: false,
       keyWord: '',
       total: 0,
-      material: {},
-      orderSale: {}
-    }
-  },
-  filters: {
-    statusFilter (type) {
-      return statusMap[type].text
-    },
-    statusTypeFilter (type) {
-      return statusMap[type].status
+      orderSale: {},
+      ordeing: [
+        {
+          carNumber: '苏F6E52H',
+          driverName: '张闲生',
+          loads: '33',
+          tonnage: '44',
+          phone: '13762825044',
+          cardId: '400001122293847556',
+          transportType: '自提汽运'
+        }
+      ]
     }
   },
   watch: {
@@ -228,18 +223,19 @@ export default {
     onLoad (index, done) {
       console.log(index)
       this.loadData(index, done)
-      //   if (this.saleOrdeing.length < 50) {
-      //     setTimeout(() => {
-      //       console.log(this.saleOrdeing)
-      //       this.saleOrdeing.push(...this.saleOrdeing_add)
-      //       done()
-      //     }, 1000)
-      //   } else {
+      // if (this.saleOrdeing.length < 1) {
+      //   this.IsNull = false
+      //   setTimeout(() => {
+      //     console.log(this.saleOrdeing)
+      //     this.saleOrdeing.push(...this.ordeing)
       //     done()
-      //   }
+      //   }, 1000)
+      // } else {
+      //   done()
+      // }
     },
     loadData (index, done) {
-      getOrderSaleList(this.getQueryParams(index)).then(res => {
+      getOrderCarAndShipList(this.getQueryParams(index)).then(res => {
         this.IsNull = false
         // this.MaterialClass = res.data
         console.log(res.rows)
@@ -268,61 +264,37 @@ export default {
       param.customerId = customerInfo.id
       param.pageNum = index
       param.pageSize = 20
-      param.releaseFlag = 'Y'
       param.column = 'createTime'
       param.order = 'DESC'
       return param
     },
-    addMaterial (saleOrdeing) {
-      console.log('saleOrdeing', saleOrdeing)
-      this.getOrderSaleInfo(saleOrdeing)
-    },
-    getOrderSaleInfo (order) {
-      getOrderSaleInfo(order.id).then(res => {
-        this.orderSale = res.data
-        console.log('OrderSaleInfo', this.orderSale)
-        this.handleOk(this.orderSale)
-      })
-    },
 
-    handleOk () {
-      const orderSaleB = {}
-      orderSaleB.materialId = this.material.id
-      orderSaleB.materialCode = this.material.code
-      orderSaleB.materialClassId = this.material.classId
-      orderSaleB.num = this.material.materialNum
-      var IsAdd = true
-      this.orderSale.orderSaleBList.map((SaleB) => {
-        if (SaleB.materialId === this.material.id) {
-          IsAdd = false
-
-          SaleB.num = (parseFloat(SaleB.num) + parseFloat(this.material.materialNum)).toFixed(4)
-        }
-        return SaleB
-      })
-      if (IsAdd) {
-        this.orderSale.orderSaleBList.push(orderSaleB)
-      }
-
-      console.log('addOrderSale', this.orderSale)
-      this.$q
-        .dialog({
-          title: '商品：' + this.material.name,
-          message: '加入订货单：' + this.orderSale.billNo,
-          cancel: true,
-          ok: '加入'
+    handleDelete (orde) {
+      console.log('handleDelete:orde', orde)
+      this.$message.confirm('是否确认删除').onOk(() => {
+        deleteOrderCarAndShipInfo(orde.id).then(res => {
+          if (res.code === 200) {
+            this.$message.success('删除成功')
+            this.refresh()
+          }
         })
-        .onOk(() => {
-          this.saveSaleOrder()
-        })
-    },
-    saveSaleOrder () {
-      putOrderSale(this.orderSale).then(res => {
-        if (res.code === 200) {
-          this.$message.success('商品添加成功')
-          this.$emit('ok')
-        }
       })
+    },
+    handleOk (orde) {
+      console.log('handleOk', orde)
+      this.$emit('ok', orde)
+      this.hide()
+    },
+    modalFormOk () {
+      this.refresh()
+    },
+    handleAdd () {
+      this.$refs.modalForm.title = '添加'
+      this.$refs.modalForm.add()
+    },
+    handleEdit (orde) {
+      this.$refs.modalForm.title = '修改'
+      this.$refs.modalForm.edit(orde)
     }
   }
 }

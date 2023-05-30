@@ -1,4 +1,4 @@
-import Layout from '../components/Layout/Layout'
+// import Layout from '../components/Layout/Layout'
 
 /**
  * 需要授权访问的路由
@@ -15,77 +15,77 @@ const asyncRoutesChildren = [
     },
     component: () => import('../pages/home/home.vue')
   },
-  {
-    path: '/workplace',
-    name: 'Workplace',
-    meta: {
-      roles: ['admin', 'editor', 'test', 'SuperAdmin'],
-      title: '个人中心',
-      icon: 'person',
-      keepAlive: true
-    },
-    component: () => import('../pages/home/Workplace.vue')
-  },
-  {
-    path: '/account',
-    name: 'account',
-    meta: {
-      roles: ['admin', 'editor', 'test', 'SuperAdmin'],
-      title: '账户中心',
-      icon: 'account_balance_wallet',
-      keepAlive: true
-    },
-    component: () => import('../pages/home/Account.vue')
-  },
-  {
-    path: '/system',
-    name: 'system',
-    meta: {
-      roles: ['SuperAdmin'],
-      title: '系统管理',
-      icon: 'fas fa-laptop-medical',
-      keepAlive: true
-    },
-    component: Layout,
-    children: [
-      {
-        path: 'user',
-        name: 'UserList',
-        meta: {
-          roles: ['SuperAdmin'],
-          title: '用户管理'
-        },
-        component: () => import('../pages/system/UserList')
-      },
-      {
-        path: 'permission',
-        name: 'PermissionList',
-        meta: {
-          roles: ['SuperAdmin'],
-          title: '菜单管理'
-        },
-        component: () => import('../pages/system/PermissionList')
-      },
-      {
-        path: 'role',
-        name: 'RoleList',
-        meta: {
-          roles: ['SuperAdmin'],
-          title: '角色管理'
-        },
-        component: () => import('../pages/system/RoleList')
-      },
-      {
-        path: 'dict',
-        name: 'DictList',
-        meta: {
-          roles: ['SuperAdmin'],
-          title: '数据字典'
-        },
-        component: () => import('../pages/system/DictList')
-      }
-    ]
-  },
+  // {
+  //   path: '/workplace',
+  //   name: 'Workplace',
+  //   meta: {
+  //     roles: ['admin', 'editor', 'test', 'SuperAdmin'],
+  //     title: '个人中心',
+  //     icon: 'person',
+  //     keepAlive: true
+  //   },
+  //   component: () => import('../pages/home/Workplace.vue')
+  // },
+  // {
+  //   path: '/account',
+  //   name: 'account',
+  //   meta: {
+  //     roles: ['admin', 'editor', 'test', 'SuperAdmin'],
+  //     title: '账户中心',
+  //     icon: 'account_balance_wallet',
+  //     keepAlive: true
+  //   },
+  //   component: () => import('../pages/home/Account.vue')
+  // },
+  // {
+  //   path: '/system',
+  //   name: 'system',
+  //   meta: {
+  //     roles: ['SuperAdmin'],
+  //     title: '系统管理',
+  //     icon: 'fas fa-laptop-medical',
+  //     keepAlive: true
+  //   },
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'user',
+  //       name: 'UserList',
+  //       meta: {
+  //         roles: ['SuperAdmin'],
+  //         title: '用户管理'
+  //       },
+  //       component: () => import('../pages/system/UserList')
+  //     },
+  //     {
+  //       path: 'permission',
+  //       name: 'PermissionList',
+  //       meta: {
+  //         roles: ['SuperAdmin'],
+  //         title: '菜单管理'
+  //       },
+  //       component: () => import('../pages/system/PermissionList')
+  //     },
+  //     {
+  //       path: 'role',
+  //       name: 'RoleList',
+  //       meta: {
+  //         roles: ['SuperAdmin'],
+  //         title: '角色管理'
+  //       },
+  //       component: () => import('../pages/system/RoleList')
+  //     },
+  //     {
+  //       path: 'dict',
+  //       name: 'DictList',
+  //       meta: {
+  //         roles: ['SuperAdmin'],
+  //         title: '数据字典'
+  //       },
+  //       component: () => import('../pages/system/DictList')
+  //     }
+  //   ]
+  // },
 
   // {
   //   path: 'async-router',

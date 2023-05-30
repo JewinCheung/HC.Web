@@ -1,5 +1,5 @@
 import axios from '../axios/AxiosConfig'
-
+import Vue from 'vue'
 /**
  * login func
  * parameter: {
@@ -11,6 +11,7 @@ import axios from '../axios/AxiosConfig'
  */
 export function login (parameter) {
   return axios({
+    baseURL: Vue.prototype.$baseURL + 'sys',
     url: '/login',
     method: 'post',
     data: parameter
@@ -26,6 +27,7 @@ export function getCustomerInfo () {
 
 export function getUserInfo () {
   return axios({
+    baseURL: Vue.prototype.$baseURL + 'sys',
     url: '/getInfo',
     method: 'get'
   })
@@ -33,7 +35,16 @@ export function getUserInfo () {
 
 export function logout () {
   return axios({
-    url: '/api/logout',
+    baseURL: Vue.prototype.$baseURL + 'sys',
+    url: '/logout',
     method: 'post'
+  })
+}
+
+export function getSubSys () {
+  return axios({
+    baseURL: Vue.prototype.$baseURL + 'sys',
+    url: '/getSubSys',
+    method: 'get'
   })
 }

@@ -4,6 +4,7 @@ import deepClone from '../utils/CloneUtils'
 import router, { resetRouter } from '../router'
 import { removeATagView, removeOneSide } from 'components/TagView/TagViewUtils'
 import { LocalStorage } from 'quasar'
+import { logout } from '@/api/login'
 const mutations = {
 
   /**
@@ -32,12 +33,16 @@ const mutations = {
    * @constructor
    */
   LOGOUT: (state, payload) => {
-    state.role = ''
-    state.routes = []
-    state.tagView = []
-    localStorage.removeItem('access_token')
-    LocalStorage.remove('user_role')
-    resetRouter()
+    logout().then(() => {
+      state.role = ''
+      state.routes = []
+      state.tagView = []
+      localStorage.removeItem('access_token')
+      LocalStorage.remove('user_role')
+      window.location.href = '/'
+      window.sessionStorage.clear()
+      resetRouter()
+    })
   },
 
   /**

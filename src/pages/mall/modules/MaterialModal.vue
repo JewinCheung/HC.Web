@@ -264,7 +264,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="q-pb-lg full-width q-px-md">
+                      <!-- <div class="q-pb-lg full-width q-px-md">
                         <q-btn
                           class="q-mb-ms text-white q-py-sm full-width"
                           style="background-color: orange; color: white;"
@@ -273,7 +273,7 @@
                           <q-icon left size="24px" name="fa fa-gift" />
                           <div>加入心愿单</div>
                         </q-btn>
-                      </div>
+                      </div> -->
                     </q-card>
                     <!---->
                   </div>
