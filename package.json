@@ -6,10 +6,10 @@
   "author": "HC System",
   "private": true,
   "scripts": {
-    "dev:spa": "quasar dev",
-    "dev:electron": "quasar dev -m electron",
-    "build:spa": "quasar build",
-    "build:electron": "quasar build -m electron",
+    "dev:spa": "set NODE_OPTIONS=--openssl-legacy-provider & quasar dev",
+    "dev:electron": "set NODE_OPTIONS=--openssl-legacy-provider & quasar dev -m electron",
+    "build:spa": "set NODE_OPTIONS=--openssl-legacy-provider & quasar build",
+    "build:electron": "set NODE_OPTIONS=--openssl-legacy-provider & quasar build -m electron",
     "clean": "quasar clean",
     "lint": "eslint --ext .js,.vue ./"
   },

@@ -91,6 +91,12 @@
                     {{ orderSale.totalPassNum }}</span
                   ></q-item-label
                 >
+                <q-item-label>
+                  备注：
+                  <span class="text-bold">
+                    {{ orderSale.remark }}</span
+                  ></q-item-label
+                >
               </q-item-section>
             </q-item>
           </q-card-section>
@@ -111,54 +117,54 @@
           </q-card-section>
           <q-separator />
           <q-card-section>
-              <q-form class="full-width" ref="myForm">
-            <q-item class="q-px-none">
-              <q-item-section top>
-                <q-item-label>
-                  <q-select
-                    dense
-                    emit-value
-                    map-options
-                    standout="bg-teal text-white"
-                    v-model="transportType"
-                    :options="dict.type.order_transport_type"
-                    label="运输方式"
-                  />
-                </q-item-label>
-                <q-item-label>
-                  <q-input
-                  clearable
-                    standout="bg-teal text-white"
-                    v-model="orderCarAndShipInfo.cardId"
-                       :rules="[$inputRules.hcodeTest]"
-                    label="身份证"
-                    dense
-                  />
-                </q-item-label>
-                                <q-item-label  class="flex justify-between">
-                  <q-btn
-                  v-show="false"
-                    @click="addCarAndShipInfo"
-                    class="q-mb-ms text-white q-py-xs"
-                    style="background-color: orange; color: white;"
-                    size="12px"
-                  >
-                    <q-icon left size="24px" name="playlist_add" />
-                    <div>添加到车船档案</div>
-                  </q-btn>
-                  <q-btn
-                  v-show="false"
-                    v-if="orderCarAndShipInfo.id"
-                    @click="putOrderCarAndShipInfo(orderCarAndShipInfo)"
-                     size="12px"
-                    class="q-mb-ms bg-primary text-white q-py-xs"
-                    style="background-color: white; color: white;"
-                  >
-                   <q-icon left size="24px" name="save" />
+            <q-form class="full-width" ref="myForm">
+              <q-item class="q-px-none">
+                <q-item-section top>
+                  <q-item-label>
+                    <q-select
+                      dense
+                      emit-value
+                      map-options
+                      standout="bg-teal text-white"
+                      v-model="transportType"
+                      :options="dict.type.order_transport_type"
+                      label="运输方式"
+                    />
+                  </q-item-label>
+                  <q-item-label>
+                    <q-input
+                      clearable
+                      standout="bg-teal text-white"
+                      v-model="orderCarAndShipInfo.cardId"
+                      :rules="[$inputRules.hcodeTest]"
+                      label="身份证"
+                      dense
+                    />
+                  </q-item-label>
+                  <q-item-label class="flex justify-between">
+                    <q-btn
+                      v-show="false"
+                      @click="addCarAndShipInfo"
+                      class="q-mb-ms text-white q-py-xs"
+                      style="background-color: orange; color: white;"
+                      size="12px"
+                    >
+                      <q-icon left size="24px" name="playlist_add" />
+                      <div>添加到车船档案</div>
+                    </q-btn>
+                    <q-btn
+                      v-show="false"
+                      v-if="orderCarAndShipInfo.id"
+                      @click="putOrderCarAndShipInfo(orderCarAndShipInfo)"
+                      size="12px"
+                      class="q-mb-ms bg-primary text-white q-py-xs"
+                      style="background-color: white; color: white;"
+                    >
+                      <q-icon left size="24px" name="save" />
 
-                    <div>保存修改</div>
-                  </q-btn>
-                  <!-- <q-btn
+                      <div>保存修改</div>
+                    </q-btn>
+                    <!-- <q-btn
                     class="text-white q-py-xs full-width"
                     style="background-color: orange; color: white;"
                     size="12px"
@@ -166,63 +172,62 @@
                     <q-icon left size="24px" name="fas fa-file-import" />
                     <div>添加到车船档案</div>
                   </q-btn> -->
-                </q-item-label>
-              </q-item-section>
-              <q-item-section top>
-                <q-item-label>
-                  <q-input
-                    clearable
-                    standout="bg-teal text-white"
-                    v-model="orderCarAndShipInfo.carNumber"
-                    label="车船号"
-                    dense
-                  />
-                </q-item-label>
-                <q-item-label>
-                  <q-input
-                  clearable
-                    standout="bg-teal text-white"
-                    v-model="orderCarAndShipInfo.tonnage"
-                    label="吨位"
-                    dense
-                  />
-                </q-item-label>
-              </q-item-section>
-              <q-item-section top>
-                <q-item-label>
-                  <q-input
-                  clearable
-                    standout="bg-teal text-white"
-                    v-model="orderCarAndShipInfo.driverName"
-                    label="司机姓名"
-                    dense
-                  />
-                </q-item-label>
-                <q-item-label>
-                  <q-input
-                  clearable
-                    standout="bg-teal text-white"
-                    v-model="orderCarAndShipInfo.loads"
-                    label="荷载"
-                    dense
-                  />
-                </q-item-label>
-              </q-item-section>
-              <q-item-section top >
-                <q-item-label>
-                  <q-input
-                  clearable
-                    standout="bg-teal text-white"
-                    v-model="orderCarAndShipInfo.phone"
-                       :rules="[$inputRules.phoneTest]"
-                    label="电话"
-                    dense
-                  />
-                </q-item-label>
-
-              </q-item-section>
-            </q-item>
-             </q-form>
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section top>
+                  <q-item-label>
+                    <q-input
+                      clearable
+                      standout="bg-teal text-white"
+                      v-model="orderCarAndShipInfo.carNumber"
+                      label="车船号"
+                      dense
+                    />
+                  </q-item-label>
+                  <q-item-label>
+                    <q-input
+                      clearable
+                      standout="bg-teal text-white"
+                      v-model="orderCarAndShipInfo.tonnage"
+                      label="吨位"
+                      dense
+                    />
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section top>
+                  <q-item-label>
+                    <q-input
+                      clearable
+                      standout="bg-teal text-white"
+                      v-model="orderCarAndShipInfo.driverName"
+                      label="司机姓名"
+                      dense
+                    />
+                  </q-item-label>
+                  <q-item-label>
+                    <q-input
+                      clearable
+                      standout="bg-teal text-white"
+                      v-model="orderCarAndShipInfo.loads"
+                      label="荷载"
+                      dense
+                    />
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section top>
+                  <q-item-label>
+                    <q-input
+                      clearable
+                      standout="bg-teal text-white"
+                      v-model="orderCarAndShipInfo.phone"
+                      :rules="[$inputRules.phoneTest]"
+                      label="电话"
+                      dense
+                    />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-form>
           </q-card-section>
 
           <q-card-section class="q-py-none">

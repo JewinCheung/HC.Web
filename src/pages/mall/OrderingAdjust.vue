@@ -235,6 +235,12 @@
                         {{ adjustInfo.approver }}</span
                       ></q-item-label
                     >
+                     <q-item-label >
+                      备注：
+                      <span class="text-bold">
+                        {{ adjustInfo.remark }}</span
+                      ></q-item-label
+                    >
                   </q-item-section>
                 </q-item>
               </q-card-section>

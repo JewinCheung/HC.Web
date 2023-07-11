@@ -29,6 +29,42 @@
     </q-btn>-->
     <q-btn round dense flat icon="apps" v-if="$q.screen.gt.sm">
       <q-tooltip>应用</q-tooltip>
+      <q-menu
+        transition-show="scale"
+        transition-hide="scale"
+        anchor="bottom right"
+        self="top right"
+      >
+        <div class="row justify-between q-col-gutter-md q-pa-sm">
+          <div class="col-12 q-gutter-md">
+            <q-card
+              v-for="(menu, index) in menuList"
+              :key="index"
+              :class="menu.class"
+              @click="redirect(menu)"
+            >
+              <q-card-section horizontal>
+                <q-card-section class="col-9 q-pa-sm">
+                  <div class="text-subtitle2 text-white">
+                    {{ menu.title }}
+                    <q-icon color="yellow" name="shopping_cart" />
+                  </div>
+                  <div class="text-h6 text-bold q-mt-sm q-mb-xs text-white">
+                    {{ menu.name }}
+                  </div>
+                </q-card-section>
+                <q-card-section class="col-3">
+                  <q-icon
+                    color="grey-1"
+                    :name="menu.icon"
+                    style="font-size: 46px"
+                  />
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
+      </q-menu>
     </q-btn>
     <q-btn round dense flat icon="message" v-if="$q.screen.gt.sm">
       <q-tooltip>消息</q-tooltip>
@@ -76,9 +112,9 @@
               Hi！ {{ this.$q.localStorage.getItem("user_info").nickName }}
             </div>
             <q-btn
-            class="q-mb-sm"
+              class="q-mb-sm"
               color="teal-8"
-               size="sm"
+              size="sm"
               label="修改密码"
               v-close-popup
               @click="updatePwd"
@@ -111,6 +147,7 @@
 
 <script>
 import UpdatePwdModal from '@/pages/logon/modules/UpdatePwdModal'
+import { getSubSys } from '@/api/login'
 export default {
   name: 'ToolbarItemRight',
   components: { UpdatePwdModal },
@@ -119,8 +156,12 @@ export default {
       search: '',
       mobileData: false,
       bluetooth: true,
-      isMaximize: false
+      isMaximize: false,
+      menuList: []
     }
+  },
+  mounted () {
+    this.getSubSys()
   },
   methods: {
     fullScreen () {
@@ -196,6 +237,63 @@ export default {
       if (process.env.MODE === 'electron') {
         this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
       }
+    },
+    getSubSys () {
+      this.menuList = []
+      // var menuLists = JSON.stringify(this.menuList)
+      // console.log(menuLists)
+      getSubSys().then(res => {
+        if (res.code === 200) {
+          // console.log(res.data)
+
+          var menuInfo = {}
+          res.data.map(item => {
+            if (JSON.parse(item.remark)) {
+              menuInfo = JSON.parse(item.remark)
+              menuInfo[0].name = item.menuName
+              menuInfo[0].url = item.path
+              // if (item.menuName !== '后台管理') {
+              this.menuList.push(menuInfo[0])
+              // }
+            }
+          })
+
+          console.log(this.menuList)
+        }
+      })
+    },
+    redirect (menu) {
+      this[menu.redirect](menu.url)
+    },
+    redirectToUrl (url) {
+      // const pathInfo = this.$router.resolve({
+      //   path: url
+      // })
+      // window.open(pathInfo.href, '_blank')
+
+      const token = localStorage.getItem('access_token')
+
+      var index = window.location.href.lastIndexOf('8889')
+      if (index > 0) {
+        const pathInfo = this.$router.resolve({
+          path: '/mall'
+        })
+        window.open(pathInfo.href, '_blank')
+      } else {
+        window.open(url + token, '_blank')
+      }
+    },
+    openUrl (url) {
+      const token = localStorage.getItem('access_token')
+      window.open(url + token, '_blank')
+    },
+    openTmsUrl (url) {
+      const token = localStorage.getItem('access_token')
+      window.open(url + token, '_blank')
+    },
+    openAdminUrl (url) {
+      const token = localStorage.getItem('access_token')
+      window.open(url + token, '_blank')
     }
   }
 }
@@ -204,5 +302,83 @@ export default {
 <style scoped>
 .hover-style:hover {
   filter: blur(1px);
+}
+.income {
+  width: 100%;
+  background: linear-gradient(to right, #68e4bc 0%, #4ad0d1 99%);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 6px 6px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #ffffff;
+  box-shadow: 0 12px 12px -11px #0db4afb8;
+  background-size: 200% auto;
+}
+
+.income:hover {
+  background-position: right center;
+  box-shadow: 0 12px 20px -11px #0db4afb8;
+}
+
+.expense {
+  width: 100%;
+  background: linear-gradient(to left, #fcac94 0%, #f3a183 98%);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 6px 6px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #ffffff;
+  box-shadow: 0 12px 12px -11px #fca76c;
+  background-size: 200% auto;
+}
+
+.expense:hover {
+  background-position: right center;
+  box-shadow: 0 12px 20px -11px #fca76c;
+}
+
+.total {
+  width: 100%;
+  background: linear-gradient(90deg, #f073c8 0%, #ff6a95 99%);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 6px 6px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #ffffff;
+  box-shadow: 0 12px 12px -11px rgba(240, 115, 200, 0.73);
+  background-size: 200% auto;
+}
+
+.manager {
+  width: 100%;
+  background: linear-gradient(to right, #36d1dc 0%, #5b86e5 99%);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 6px 6px;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #ffffff;
+  box-shadow: 0 12px 12px -11px #36d1dc;
+  background-size: 200% auto;
+}
+
+.manager:hover {
+  background-position: right center;
+  box-shadow: 0 12px 20px -11px #36d1dc;
+}
+.total:hover {
+  background-position: right center;
+  box-shadow: 0 12px 20px -11px rgba(240, 115, 200, 0.73);
 }
 </style>

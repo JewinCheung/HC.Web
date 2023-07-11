@@ -194,7 +194,7 @@
                         {{ orderSale.leadApprover }}</span
                       ></q-item-label
                     >
-                    <q-item-label v-if="orderSale.materialClassCode!=='02'">
+                    <q-item-label v-if="orderSale.materialClassCode !== '02'">
                       内勤确认：
                       <span class="text-bold">
                         {{ orderSale.approver }}</span
@@ -222,6 +222,12 @@
                       审批数量：
                       <span class="text-bold">
                         {{ orderSale.totalPassNum }}</span
+                      ></q-item-label
+                    >
+                    <q-item-label>
+                      备注：
+                      <span class="text-bold">
+                        {{ orderSale.remark }}</span
                       ></q-item-label
                     >
                   </q-item-section>

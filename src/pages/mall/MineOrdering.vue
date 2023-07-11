@@ -268,6 +268,12 @@
                         {{ orderSale.totalPassNum }}</span
                       ></q-item-label
                     >
+                      <q-item-label>
+                      备注：
+                      <span class="text-bold">
+                        {{ orderSale.remark }}</span
+                      ></q-item-label
+                    >
                   </q-item-section>
                 </q-item>
               </q-card-section>

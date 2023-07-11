@@ -78,6 +78,14 @@ const constantRoutes = [
     component: () => import('../pages/logon/logon.vue')
   },
   {
+    path: '/sso/login',
+    name: 'sso',
+    meta: {
+      title: '加载'
+    },
+    component: () => import('../pages/logon/AutoLogin.vue')
+  },
+  {
     path: '/NoFound404',
     name: 'NoFound404',
     meta: {

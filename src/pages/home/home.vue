@@ -368,10 +368,23 @@ export default {
       this[menu.redirect](menu.url)
     },
     redirectToUrl (url) {
-      const pathInfo = this.$router.resolve({
-        path: url
-      })
-      window.open(pathInfo.href, '_blank')
+      // const pathInfo = this.$router.resolve({
+      //   path: url
+      // })
+      // window.open(pathInfo.href, '_blank')
+
+      const token = localStorage.getItem('access_token')
+
+      var index = window.location.href.lastIndexOf('8887')
+      if (index > 0) {
+        const pathInfo = this.$router.resolve({
+          path: '/mall'
+        })
+        window.open(pathInfo.href, '_blank')
+      } else {
+        // url = 'http://localhost:8889/sso/login?token='
+        window.open(url + token, '_blank')
+      }
     },
     openUrl (url) {
       const token = localStorage.getItem('access_token')

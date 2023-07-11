@@ -368,12 +368,16 @@ export default {
         this.$message.warning('商品不在同一大类，不能添加！')
         return
       }
-      console.log('添加商品：', this.material)
-      this.$store.commit('SET_MESSAGE_ADD', this.material)
-      this.$message.success('添加到新订单成功')
+      if (this.material.materialNum > 0) {
+        console.log('添加商品：', this.material)
+        this.$store.commit('SET_MESSAGE_ADD', this.material)
+        this.$message.success('添加到新订单成功')
+      }
     },
     joinOrdering () {
-      this.$emit('openOrdering', this.material)
+      if (this.material.materialNum > 0) {
+        this.$emit('openOrdering', this.material)
+      }
     },
     arrayContains () {
       if (
@@ -405,7 +409,7 @@ export default {
     checkNum (material) {
       console.log('数量检查', material)
       if (material.materialNum <= 0) {
-        material.materialNum = 1
+        // material.materialNum = 1
         this.$message.warning('数量必须大于0')
       }
     }

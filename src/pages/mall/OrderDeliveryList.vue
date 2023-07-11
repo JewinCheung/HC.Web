@@ -231,6 +231,12 @@
                         {{ deliveryInfo.approver }}</span
                       ></q-item-label
                     >
+                    <q-item-label>
+                      备注：
+                      <span class="text-bold">
+                        {{ deliveryInfo.remark }}</span
+                      ></q-item-label
+                    >
                   </q-item-section>
                 </q-item>
               </q-card-section>
