@@ -23,7 +23,7 @@ export const TableMixin = {
       //   /* 默认排序参数 */
       isorter: {
         column: 'createTime',
-        order: ' DESC'
+        order: 'DESC'
       },
       /* table加载状态 */
       loading: false,
@@ -37,7 +37,7 @@ export const TableMixin = {
   created () {
     if (!this.disableMixinCreated) {
     //   console.log(' -- mixin created -- ')
-      this.loadData()
+    // this.loadData()
       // 初始化字典配置 在自己页面定义
       this.initDictConfig()
     }
@@ -64,7 +64,7 @@ export const TableMixin = {
         sub += '- 52px ' // 搜索栏默认高度
         sub += '- 16px ' // page空隙高度上8px+下8px
         sub += '- 40px ' // 列表空隙高度
-
+        sub += '- 150px ' // 表头
         height = 'calc(100vh ' + sub + ')'
       }
       /* 全屏直接拉满 */
@@ -93,10 +93,8 @@ export const TableMixin = {
       var params = this.getQueryParams()// 查询条件
       this.loading = true
       getAction(this.url.list, params).then((res) => {
-        if (res.success) {
-          this.dataSource = res.response.data
-          this.pagination.rowsNumber = res.response.dataCount
-        }
+        this.dataSource = res.rows
+        this.pagination.rowsNumber = res.total
       }).finally(() => {
         this.loading = false
       })
@@ -104,12 +102,13 @@ export const TableMixin = {
     /* 获取查询条件 */
     getQueryParams () {
       var param = Object.assign({}, this.queryParam)
-      param.pageIndex = this.pagination.page
+      param.pageNum = this.pagination.page
       param.pageSize = this.pagination.rowsPerPage
+      param.column = this.isorter.column
       if (this.pagination.sortBy) {
-        param.orderBy = this.pagination.descending ? this.pagination.sortBy + ' DESC' : this.pagination.sortBy
+        param.order = this.pagination.descending ? 'DESC' : 'ASC'
       } else {
-        param.orderBy = this.isorter.column + this.isorter.order
+        param.order = this.isorter.order
       }
       return filterObj(param)
     },

@@ -77,6 +77,9 @@
                       账户信息 - [{{ accountInfo.saleorgName}}]
                     </div>
                   </div>
+                   <q-btn @click="handleAccountId(accountInfo,accountInfo.id,'main')" class="q-mr-md" color="white" round flat icon="format_list_bulleted" >
+                    <q-tooltip>款项明细</q-tooltip>
+                   </q-btn>
                 </div>
               </q-card-section>
               <q-separator />
@@ -92,7 +95,7 @@
                     once
                     class="card-padding col-lg-6 col-md-6 col-xs-12 col-sm-12 q-pa-sm"
                   >
-                    <q-card class="cursor-pointer cimo-shadow q-ma-sm">
+                    <q-card class="cursor-pointer cimo-shadow q-ma-sm" @click="handleAccountId(accountInfo,item.id,item.materialclassName)">
                       <q-item>
                         <q-item-section avatar>
                           <q-img
@@ -146,6 +149,7 @@
         </div>
       </div>
       <!---->
+      <AccountModal ref="accountModal" ></AccountModal>
     </div>
   </base-content>
 </template>
@@ -153,9 +157,11 @@
 <script>
 import { getByUser, getOrgList, getCustomerInfo } from '@/api/api'
 import BaseContent from '@/components/BaseContent/BaseContent'
+import AccountModal from './modules/AccountModal'
+
 export default {
   name: 'MyAccount',
-  components: { BaseContent },
+  components: { BaseContent, AccountModal },
   data () {
     return {
       loading: false,
@@ -207,6 +213,9 @@ export default {
     },
     setAccountInfo (accountInfo) {
       this.accountInfo = accountInfo
+    },
+    handleAccountId (accountInfo, id, type) {
+      this.$refs.accountModal.show(accountInfo, id, type)
     }
   }
 }

@@ -121,6 +121,15 @@
                             >
                           </q-item-label>
                         </q-item-section>
+                        <q-item-section>
+                          <q-item-label
+                            class="q-mt-xs text-body2"
+                            v-if="orde.close === 'Y'"
+                          >
+                            <q-badge outline color="orange" label="发货完成" />
+                          </q-item-label>
+                        </q-item-section>
+
                         <q-item-section side>
                           <q-item-label caption>
                             <div
@@ -128,6 +137,14 @@
                               class="text-teal"
                             >
                               申请数量： {{ orde.totalNum }}
+                            </div>
+                          </q-item-label>
+                          <q-item-label caption>
+                            <div
+                              style="font-size: 1.1em; font-weight: 600;"
+                              class="text-deep-orange"
+                            >
+                              实际发货数量：{{ orde.totalRealityNum || 0 }}
                             </div>
                           </q-item-label>
                         </q-item-section>
@@ -241,52 +258,56 @@
                 </q-item>
               </q-card-section>
 
-          <q-card-section class="q-py-none">
-            <div
-              class="flex justify-between align-center items-center"
-              style=""
-            >
-              <span class="q-mb-xs text-subtitle2 text-grey-8">运输信息</span>
-            </div>
-          </q-card-section>
-          <q-separator />
-          <q-card-section>
-              <q-form class="full-width" ref="myForm">
-            <q-item class="q-px-none">
-              <q-item-section top class="col-4">
-                <q-item-label>
-                  运输方式：{{deliveryInfo.transportType?transportTypeFilter(deliveryInfo.transportType):'' }}
-                </q-item-label>
-                <q-item-label>
-                  身份证号：{{deliveryInfo.cardId}}
-
-                </q-item-label>
-              </q-item-section>
-              <q-item-section top>
-                <q-item-label>
-                    车船号：{{deliveryInfo.carNumber}}
-                </q-item-label>
-                <q-item-label>
-                      吨位：{{deliveryInfo.tonnage}}
-                </q-item-label>
-              </q-item-section>
-              <q-item-section top>
-                <q-item-label>
-                   司机姓名：{{deliveryInfo.driverName}}
-
-                </q-item-label>
-                <q-item-label>
-                   荷载：{{deliveryInfo.loads}}
-                </q-item-label>
-              </q-item-section>
-              <q-item-section top >
-                <q-item-label>
-                   电话：{{deliveryInfo.phone}}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-             </q-form>
-          </q-card-section>
+              <q-card-section class="q-py-none">
+                <div
+                  class="flex justify-between align-center items-center"
+                  style=""
+                >
+                  <span class="q-mb-xs text-subtitle2 text-grey-8"
+                    >运输信息</span
+                  >
+                </div>
+              </q-card-section>
+              <q-separator />
+              <q-card-section>
+                <q-form class="full-width" ref="myForm">
+                  <q-item class="q-px-none">
+                    <q-item-section top class="col-4">
+                      <q-item-label>
+                        运输方式：{{
+                          deliveryInfo.transportType
+                            ? transportTypeFilter(deliveryInfo.transportType)
+                            : ""
+                        }}
+                      </q-item-label>
+                      <q-item-label>
+                        身份证号：{{ deliveryInfo.cardId }}
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section top>
+                      <q-item-label>
+                        车船号：{{ deliveryInfo.carNumber }}
+                      </q-item-label>
+                      <q-item-label>
+                        吨位：{{ deliveryInfo.tonnage }}
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section top>
+                      <q-item-label>
+                        司机姓名：{{ deliveryInfo.driverName }}
+                      </q-item-label>
+                      <q-item-label>
+                        荷载：{{ deliveryInfo.loads }}
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section top>
+                      <q-item-label>
+                        电话：{{ deliveryInfo.phone }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-form>
+              </q-card-section>
               <q-card-section class="q-py-none">
                 <div
                   class="flex justify-between align-center items-center"
@@ -350,6 +371,12 @@
                         class="q-mt-xs text-body2 text-weight-bold text-teal"
                       >
                         申请数量：{{ material.num }}
+                      </q-item-label>
+                      <q-item-label
+                        class="q-mt-xs text-body2  text-deep-orange"
+                      >
+                        <span class="cursor-pointer">实际发货数量：</span>
+                        <span> {{ material.realityNum || 0 }}</span>
                       </q-item-label>
                       <!-- <q-item-label
                         caption
