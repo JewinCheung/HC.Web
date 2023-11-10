@@ -54,6 +54,7 @@ export default async ({ app, router, Vue, store }) => {
         next()
       } else {
         next({ path: '/logon', query: { redirect: to.fullPath } })
+        // next({ path: '/scanQRCodes', query: { redirect: to.fullPath } })
       }
     }
   })

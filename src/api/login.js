@@ -48,3 +48,12 @@ export function getSubSys () {
     method: 'get'
   })
 }
+
+export function getInfoByQRCode (parameter) {
+  return axios({
+    baseURL: Vue.prototype.$baseURL + 'tms',
+    url: '/wx/appoint/getInfoByQRCode',
+    method: 'post',
+    data: parameter
+  })
+}

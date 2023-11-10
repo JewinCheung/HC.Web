@@ -86,6 +86,13 @@
             /> -->
             <q-input
               outlined
+              v-model="customer.phone"
+              style="padding-bottom: 10px"
+              label="联系人手机"
+              :rules="[$inputRules.phoneTest]"
+            />
+            <q-input
+              outlined
               v-model="customer.referrerName"
               style="padding-bottom: 10px"
               label="推荐人姓名"

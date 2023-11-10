@@ -238,12 +238,83 @@
                         {{ orderSale.leadApprover }}</span
                       ></q-item-label
                     >
-                    <q-item-label v-if="orderSale.materialClassCode!=='02'">
+                    <q-item-label v-if="orderSale.materialClassCode !== '02'">
                       内勤确认：
                       <span class="text-bold">
                         {{ orderSale.approver }}</span
                       ></q-item-label
                     >
+                    <q-item-label>
+                      <div v-show="orderSale.status !== '0'">
+                        来款日期：
+                        <span
+                          class="text-bold"
+                          v-show="orderSale.status !== '0'"
+                        >
+                          {{ orderSale.receivedDate }}</span
+                        >
+                      </div>
+                      <div class="row" v-show="orderSale.status === '0'">
+                        <span
+                          class="text-justify col-2"
+                          style="line-height: 40px;"
+                        >
+                          来款日期：
+                        </span>
+                        <div>
+                          <q-input
+                            :disable="orderSale.status !== '0'"
+                            dense
+                            readonly
+                            v-model="orderSale.receivedDate"
+                          >
+                            <template v-slot:append>
+                              <q-icon name="event" class="cursor-pointer">
+                                <q-popup-proxy
+                                  ref="qDateProxy"
+                                  transition-show="scale"
+                                  transition-hide="scale"
+                                >
+                                  <q-date
+                                    v-model="orderSale.receivedDate"
+                                    mask="YYYY-MM-DD"
+                                  >
+                                    <div class="row items-center justify-end">
+                                      <q-btn
+                                        v-close-popup
+                                        label="确定"
+                                        color="primary"
+                                        flat
+                                      />
+                                    </div>
+                                  </q-date>
+                                </q-popup-proxy>
+                              </q-icon>
+                            </template>
+                          </q-input>
+                        </div>
+                      </div>
+                    </q-item-label>
+                    <q-item-label>
+                      <div class="row">
+                        <span
+                          class="text-justify col-2"
+                          style="line-height: 40px;"
+                        >
+                          打款方式：
+                        </span>
+                        <div class="text-justify col-5">
+                          <q-select
+                            :disable="orderSale.status !== '0'"
+                            dense
+                            emit-value
+                            map-options
+                            v-model="orderSale.receivedMoneyType"
+                            :options="options"
+                          />
+                        </div>
+                      </div>
+                    </q-item-label>
                   </q-item-section>
                   <q-item-section top>
                     <q-item-label>
@@ -268,12 +339,42 @@
                         {{ orderSale.totalPassNum }}</span
                       ></q-item-label
                     >
-                      <q-item-label>
+                    <q-item-label>
                       备注：
                       <span class="text-bold">
                         {{ orderSale.remark }}</span
                       ></q-item-label
                     >
+                    <q-item-label>
+                      <div v-show="orderSale.status !== '0'">
+                        来款金额：
+                        <span
+                          class="text-bold"
+                          v-show="orderSale.status !== '0'"
+                        >
+                          {{ orderSale.receivedMoney }}</span
+                        >
+                      </div>
+                      <div class="row" v-show="orderSale.status === '0'">
+                        <span
+                          class="text-justify col-2"
+                          style="line-height: 40px;"
+                        >
+                          来款金额：
+                        </span>
+                        <div>
+                          <q-input
+                            :disable="orderSale.status !== '0'"
+                            type="number"
+                            :min="0"
+                            dense
+                            v-model="orderSale.receivedMoney"
+                            @blur="checkPic(orderSale)"
+                          >
+                          </q-input>
+                        </div>
+                      </div>
+                    </q-item-label>
                   </q-item-section>
                 </q-item>
               </q-card-section>
@@ -407,10 +508,12 @@
                       >
                         通过数量： {{ material.passNum }}
                       </q-item-label>
-                   <q-item-label class="q-mt-xs text-body2  text-deep-orange">
-                    <span class="cursor-pointer">已发货数量：</span>
-                    <span> {{ material.deliveryNum }}</span>
-                  </q-item-label>
+                      <q-item-label
+                        class="q-mt-xs text-body2  text-deep-orange"
+                      >
+                        <span class="cursor-pointer">已发货数量：</span>
+                        <span> {{ material.deliveryNum }}</span>
+                      </q-item-label>
                     </q-item-section>
 
                     <q-item-section top side>
@@ -625,7 +728,11 @@ export default {
       queryParam: { status: '', keyWord: '' },
       orderSale: {},
       isSearch: false,
-      orderInfo: {}
+      orderInfo: {},
+      options: [
+        { value: '01', label: '电汇' },
+        { value: '02', label: '承兑' }
+      ]
     }
   },
   filters: {
@@ -819,6 +926,14 @@ export default {
 
     submitSaleOrder () {
       console.log('submitSaleOrder', this.orderSale)
+      if (
+        !this.orderSale.receivedDate ||
+        this.orderSale.receivedDate === null ||
+        this.orderSale.receivedDate === ''
+      ) {
+        this.$message.warning('来款日期不能为空')
+        return
+      }
       //   this.orderSale.nccId = 'NO001'
       //   this.orderSale.nccNo = 'NO001'
       this.visible = true
@@ -849,12 +964,12 @@ export default {
           }, 500)
         })
       // }
-        // })
-        // .finally(() => {
-        //   setTimeout(() => {
-        //     this.visible = false
-        //   }, 500)
-        // })
+      // })
+      // .finally(() => {
+      //   setTimeout(() => {
+      //     this.visible = false
+      //   }, 500)
+      // })
     },
     submitOrderSaleAdjust () {
       submitOrderSaleAdjust(this.orderSale)
@@ -1004,6 +1119,13 @@ export default {
       if (material.num <= 0) {
         material.num = 1
         this.$message.warning('数量必须大于0')
+      }
+    },
+    checkPic (orderSale) {
+      console.log('金额检查', orderSale)
+      if (orderSale.receivedMoney < 0) {
+        orderSale.receivedMoney = 0
+        this.$message.warning('金额不能小于0')
       }
     }
   }

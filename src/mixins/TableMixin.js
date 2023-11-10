@@ -104,12 +104,15 @@ export const TableMixin = {
       var param = Object.assign({}, this.queryParam)
       param.pageNum = this.pagination.page
       param.pageSize = this.pagination.rowsPerPage
-      param.column = this.isorter.column
+      // param.column = this.isorter.column
       if (this.pagination.sortBy) {
         param.order = this.pagination.descending ? 'DESC' : 'ASC'
-      } else {
-        param.order = this.isorter.order
+        param.column = this.pagination.sortBy
       }
+
+      // else {
+      //   param.order = this.isorter.order
+      // }
       return filterObj(param)
     },
     /* 获取展示的列 */

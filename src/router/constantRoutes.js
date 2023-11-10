@@ -61,6 +61,15 @@ const mallChildRoutesChildren = [
  * constantRoutes : Users do not need to log in to access account
  */
 const constantRoutes = [
+  {
+    path: '/scanQRCodes',
+    name: 'scanQRCodes',
+    meta: {
+      title: '扫码二维码',
+      isHidden: true
+    },
+    component: () => import('../pages/home/scanQRCodes')
+  },
   // 商城路由
   {
     path: '/mall',
@@ -83,7 +92,7 @@ const constantRoutes = [
     meta: {
       title: '加载'
     },
-    component: () => import('../pages/logon/AutoLogin.vue')
+    component: () => import('../pages/logon/autologin.vue')
   },
   {
     path: '/NoFound404',

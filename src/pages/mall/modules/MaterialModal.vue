@@ -55,9 +55,12 @@
                       round
                       class="q-ma-xs"
                       style="font-size: 10px; color: rgb(176, 64, 64);"
-                      icon="far fa-star"
+                      :icon="
+                        material.collectFlag === 'Y' ? 'fa fa-star' : 'far fa-star'
+                      "
+                      @click.stop="AddFavorites(material)"
                     >
-                      <q-tooltip>添加收藏</q-tooltip>
+                      <q-tooltip>{{material.collectFlag === 'Y'?'取消收藏':'添加收藏'}}</q-tooltip>
                     </q-btn>
                   </div>
                 </q-item-label>
@@ -310,7 +313,7 @@
   </q-dialog>
 </template>
 <script>
-import { getMaterDetail } from '@/api/api'
+import { getMaterDetail, setCollect } from '@/api/api'
 // import deepClone from '@/utils/CloneUtils'
 export default {
   name: 'MaterialModal',
@@ -412,6 +415,32 @@ export default {
         // material.materialNum = 1
         this.$message.warning('数量必须大于0')
       }
+    },
+    AddFavorites (item) {
+      console.log(item)
+      var collectFlag = item.collectFlag
+      if (item.collectFlag !== 'Y') {
+        collectFlag = 'Y'
+      } else {
+        collectFlag = 'N'
+      }
+      var params = {
+        id: item.id,
+        collectFlag: collectFlag
+      }
+
+      setCollect(params).then(res => {
+        if (res.code === 200) {
+          this.$nextTick(() => {
+            item.collectFlag = collectFlag
+          })
+          if (collectFlag === 'Y') {
+            this.$message.success('收藏成功！')
+          } else {
+            this.$message.success('取消收藏！')
+          }
+        }
+      })
     }
   }
 }

@@ -388,7 +388,29 @@
                   </q-item>
                 </q-list>
               </q-card-section>
+              <q-card-section v-show="deliveryInfo.status === '0'">
+                <div class="row bg-grey-2 q-pa-sm">
+                   <div class="col-1"></div>
+                  <div class="col-4 q-pa-sm">
+                    <q-btn
+                      class="full-width"
+                      label="提交"
+                      color="brown"
+                      @click="submitOrder"
+                    />
+                  </div>
+                   <div class="col-2"></div>
+                  <div class="col-4 q-pa-sm">
+                    <q-btn
+                      class="full-width"
+                      label="删除"
+                      color="warning"
+                      @click="removeOrder(deliveryInfo)"
+                    />
+                  </div>
 
+                </div>
+              </q-card-section>
               <q-inner-loading
                 :showing="visible"
                 color="teal"
@@ -404,7 +426,7 @@
 </template>
 
 <script>
-import { getDeliveryList, getDeliveryInfo, getMaterDetail } from '@/api/api'
+import { getDeliveryList, getDeliveryInfo, getMaterDetail, submitOrderDelivery, deleteOrderDelivery } from '@/api/api'
 const statusMap = {
   0: {
     status: 'warning',
@@ -589,6 +611,34 @@ export default {
       param.column = 'createTime'
       param.order = 'DESC'
       return param
+    },
+    submitOrder () {
+      console.log('submitDeliveryInfo', this.deliveryInfo)
+      this.visible = true
+      submitOrderDelivery(this.orderSale)
+        .then(res => {
+          if (res.code === 200) {
+            this.$message.success('发货单提交成功')
+            this.deliveryInfo.status = res.data.status
+            this.refresh()
+          }
+        })
+        .finally(() => {
+          setTimeout(() => {
+            // this.getDeliveryInfo(this.deliveryInfo)
+            this.visible = false
+          }, 500)
+        })
+    },
+    removeOrder (deliveryInfo) {
+      console.log('handleDelete:orderSale', deliveryInfo)
+      this.$message.confirm('是否确认删除:' + deliveryInfo.billNo).onOk(() => {
+        deleteOrderDelivery(deliveryInfo.id).then(res => {
+          this.$message.success(deliveryInfo.billNo + ':发货单删除成功')
+          this.refresh()
+          this.close()
+        })
+      })
     }
   }
 }

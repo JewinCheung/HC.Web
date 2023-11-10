@@ -152,6 +152,11 @@
                       label="显示所有商品"
                       @click="allMaterial"
                     />
+                    <q-toggle
+                      v-model="collectFlag"
+                      color="green"
+                      label="显示收藏"
+                    />
                   </div>
                   <!-- material 商品列表start -->
                   <q-infinite-scroll
@@ -203,9 +208,14 @@
                                         round
                                         class="q-ma-xs"
                                         style="font-size: 10px; color: rgb(176, 64, 64);"
-                                        icon="far fa-star"
+                                        :icon="
+                                          item.collectFlag === 'Y'
+                                            ? 'fa fa-star'
+                                            : 'far fa-star'
+                                        "
+                                        @click.stop="AddFavorites(item)"
                                       >
-                                        <q-tooltip>添加收藏</q-tooltip>
+                                        <q-tooltip>{{item.collectFlag === 'Y'?'取消收藏':'添加收藏'}}</q-tooltip>
                                       </q-btn>
                                     </div>
                                   </div>
@@ -304,8 +314,9 @@
 <script>
 import MaterialModal from './modules/MaterialModal'
 import OrderingModal from './modules/OrderingModal'
-import { getMateriallist } from '@/api/api'
+import { getMateriallist, setCollect } from '@/api/api'
 import deepClone from '@/utils/CloneUtils'
+// import Vue from 'vue'
 export default {
   name: 'Commodity',
   components: { MaterialModal, OrderingModal },
@@ -318,6 +329,7 @@ export default {
         width: '5px',
         opacity: 0.75
       },
+      collectFlag: false,
       expanded: true,
       active_id: '',
       active_expansion_id: '',
@@ -416,6 +428,19 @@ export default {
         this.$refs.scrollTarget.resume()
         this.$refs.scrollTarget.trigger()
       }
+    },
+    collectFlag (n, o) {
+      console.log('收藏显示', n)
+      if (n) {
+        this.queryParam.collectFlag = 'Y'
+      } else {
+        this.queryParam.collectFlag = 'N'
+        // Vue.delete(this.queryParam, 'collectFlag')
+      }
+      this.material = []
+      this.$refs.scrollTarget.reset()
+      this.$refs.scrollTarget.resume()
+      this.$refs.scrollTarget.trigger()
     }
   },
   mounted () {
@@ -564,6 +589,32 @@ export default {
     },
     AddMaterialModalOk () {
       this.$refs.orderingModal.hide()
+    },
+    AddFavorites (item) {
+      console.log(item)
+      var collectFlag = item.collectFlag
+      if (item.collectFlag !== 'Y') {
+        collectFlag = 'Y'
+      } else {
+        collectFlag = 'N'
+      }
+      var params = {
+        id: item.id,
+        collectFlag: collectFlag
+      }
+
+      setCollect(params).then(res => {
+        if (res.code === 200) {
+          this.$nextTick(() => {
+            item.collectFlag = collectFlag
+          })
+          if (collectFlag === 'Y') {
+            this.$message.success('收藏成功！')
+          } else {
+            this.$message.success('取消收藏！')
+          }
+        }
+      })
     }
   }
 }

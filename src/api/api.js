@@ -50,6 +50,9 @@ const addDelivery = (params) => postAction('/order/delivery', params) // 新增�
 const getDeliveryList = (params) => getAction('/order/delivery/list', params) // 查询发货清单
 const getDeliveryInfo = (key) => getKeyAction('/order/delivery', key) // 查询发货清单明细
 
+const submitOrderDelivery = (params) => postAction('/order/delivery/submit', params) // 提交发货单
+const deleteOrderDelivery = (keys) => deleteKeysAction('/order/delivery', keys) // 删除发货单
+
 const getByUser = () => getAction('/order/account/getByUser')
 const getCustomerInfo = (key) => getKeyAction('/order/customer', key)
 const getOrgList = (params) => getAction('/order/org/list', params)
@@ -62,6 +65,7 @@ const deleteOrderCarAndShipInfo = (keys) => deleteKeysAction('/order/carAndShip'
 
 const getDicts = (key) => getKeyAction('/system/dict/data/type/', key) // 根据字典类型查询字典数据信息
 
+const setCollect = (params) => postAction('/order/material/collect', params) // 收藏/取消收藏   id; collectFlag Y/N
 export {
   addPermission,
   editPermission,
@@ -105,6 +109,9 @@ export {
   putOrderCarAndShipInfo,
   deleteOrderCarAndShipInfo,
   getOrgs,
-  getDicts
+  getDicts,
+  setCollect,
+  submitOrderDelivery,
+  deleteOrderDelivery
 
 }
