@@ -216,6 +216,11 @@
     </q-page-container>
     <ShoppingModal ref="shoppingModal"></ShoppingModal>
     <MineOrderingModal ref="mineOrderingModal"></MineOrderingModal>
+    <q-page-sticky position="bottom-right" :offset="[18, 72]">
+      <div class="row">
+        <q-btn round color="teal" icon="assignment" @click="showShopping" />
+      </div>
+    </q-page-sticky>
   </q-layout>
 </template>
 <script>

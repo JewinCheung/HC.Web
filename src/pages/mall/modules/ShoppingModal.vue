@@ -1,5 +1,5 @@
 <template>
-  <q-dialog flat  v-model="showDialog">
+  <q-dialog flat  v-model="showDialog" :position="position" full-height seamless >
     <q-card style="min-width: 700px">
       <q-btn flat dense color="black" class="q-mt-lg q-ml-lg" v-close-popup>
         <q-icon
@@ -126,6 +126,7 @@ export default {
   data () {
     return {
       title: '操作',
+      position: 'left',
       loading: false,
       disableSubmit: false,
       showDialog: false,
@@ -163,7 +164,12 @@ export default {
     show () {
       console.log('购物车：', this.$store.getters.getMaterial)
       this.materialList = deepClone(this.$store.getters.getMaterial)
-      this.showDialog = true
+
+      if (this.showDialog) {
+        this.showDialog = false
+      } else {
+        this.showDialog = true
+      }
     },
 
     handleOk () {

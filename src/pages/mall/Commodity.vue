@@ -215,7 +215,11 @@
                                         "
                                         @click.stop="AddFavorites(item)"
                                       >
-                                        <q-tooltip>{{item.collectFlag === 'Y'?'取消收藏':'添加收藏'}}</q-tooltip>
+                                        <q-tooltip>{{
+                                          item.collectFlag === "Y"
+                                            ? "取消收藏"
+                                            : "添加收藏"
+                                        }}</q-tooltip>
                                       </q-btn>
                                     </div>
                                   </div>
